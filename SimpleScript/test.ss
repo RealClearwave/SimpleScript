@@ -1,14 +1,9 @@
-#function Helo
-decl(helo){
-    print(1);
-    call(func2);
+#for... Loop Test
+for(i,1,10){
+	for(j,1,10){
+		print(i j is:);
+		dspv(i);
+		dspv(j);
+		endl();
+	}
 }
-
-#function func2
-decl(func2){
-    print(2)
-    call(helo);
-}
-
-call(helo);
-exit();

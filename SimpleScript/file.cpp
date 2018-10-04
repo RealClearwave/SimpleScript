@@ -54,6 +54,17 @@ void fign(std::string fn){
 	//std::cout<<"fign to esp:"<<cur.esp<<std::endl;
 }
 
+void fExeuntil(std::string flg){
+	//std::cout<<"Entered f with "<<cur.ln[cur.esp]<<std::endl;
+	int te = cur.esp;cur.esp++;
+	while (cur.ln[cur.esp] != flg){
+		graDentify(cur.ln[cur.esp]);
+		cur.esp++;
+	}
+	
+	//std::cout<<"Loop back at "<<cur.esp<<std::endl;
+	cur.esp = te;
+}
 void mDec(std::string ms){
 	//std::cout<<"Current Esp is :"<<cur.esp<<std::endl;
 	cur.fun2ln[ms] =cur.esp;

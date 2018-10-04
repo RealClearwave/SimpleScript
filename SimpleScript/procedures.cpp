@@ -29,15 +29,19 @@ int cret(std::string argv[]);
 int quit(std::string argv[]);
 int decfunc(std::string argv[]);
 int exefunc(std::string argv[]);
+int crepeat(std::string argv[]);
 
 int (*functbl[maxfunc])(std::string argv[]) = {
 	print,println,delay0,calisVari,decVari,getVari,dspVari,
 	addVari,cinVari,comp,if_sel,go_to,prblnk,crnd,
-	subVari,mulVari,divVari,cret,quit,decfunc,exefunc
+	subVari,mulVari,divVari,cret,quit,decfunc,exefunc,
+	crepeat
 };
 
 int args[maxfunc] = {
-	1,1,1,1,2,1,1,2,0,1,3,1,0,0,2,2,2,0,0,1,1
+	1,1,1,1,2,1,1,2,0,1,
+	3,1,0,0,2,2,2,0,0,1,
+	1,3
 };
 int execPro(int id, ...){
 	std::string argv[maxarg];
@@ -236,4 +240,17 @@ int decfunc(std::string argv[]){
 
 int exefunc(std::string argv[]){
 	return mExe(argv[0]);
+}
+
+int crepeat(std::string argv[]){ //3 args
+	std::string var = argv[0];
+	int start = std::stoi(argv[1]),end = std::stoi(argv[2]);
+	if (!isVari(var)) variPush(var,start); else variMove(var,start);
+	variMove(var,variFetch(var)-1);
+	while (variFetch(var) < end){
+		variMove(var,variFetch(var)+1);
+		if (variFetch(var) < end) fExeuntil("}");
+	}
+	
+	return end - start + 1;
 }

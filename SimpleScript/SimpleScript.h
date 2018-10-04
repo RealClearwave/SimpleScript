@@ -31,6 +31,7 @@ void fRet();
 int  mExe(std::string ms);
 void mDec(std::string ms);
 void fign(std::string fn);
+void fExeuntil(std::string flg);
 
 //Stylize
 std::string stylize(std::string ln);
