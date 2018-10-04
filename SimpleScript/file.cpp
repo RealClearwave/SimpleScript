@@ -57,7 +57,7 @@ void fign(std::string fn){
 void mDec(std::string ms){
 	//std::cout<<"Current Esp is :"<<cur.esp<<std::endl;
 	cur.fun2ln[ms] =cur.esp;
-	fign("^");
+	fign("}");
 }
 
 int  mExe(std::string ms){

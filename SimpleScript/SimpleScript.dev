@@ -34,19 +34,19 @@ UnitCount=7
 [VersionInfo]
 Major=1
 Minor=7
-Release=3
-Build=336
+Release=5
+Build=338
 LanguageID=2052
 CharsetID=1252
 CompanyName=
-FileVersion=1.7.3.336
+FileVersion=1.7.5.338
 FileDescription=An Light Script Emulator
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=SimpleScript
-ProductVersion=1.7.3.336
+ProductVersion=1.7.5.338
 AutoIncBuildNr=1
 SyncProduct=1
 
