@@ -1,5 +1,4 @@
 #include <string>
-const std::string VERS = "1.7a";
 
 //calling procedures
 const int  maxarg = 1001;
@@ -32,3 +31,6 @@ void fRet();
 int  mExe(std::string ms);
 void mDec(std::string ms);
 void fign(std::string fn);
+
+//Stylize
+std::string stylize(std::string ln);

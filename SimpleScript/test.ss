@@ -1,6 +1,11 @@
 decl(helo);
-print(Hello);
-call(hello);
+    print(1);
+    call(func2);
+^
+
+decl(func2);
+    print(2)
+    call(helo);
 ^
 
 call(helo);

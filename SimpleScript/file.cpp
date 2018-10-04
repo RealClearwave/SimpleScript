@@ -18,8 +18,8 @@ void fLoad(std::string fn){
 	cur.rtl[++cur.rtc] = 0;
 	std::string tmp;
 	std::ifstream fin(fn.c_str());
-	while (fin>>tmp)
-		cur.ln[++cur.size] = tmp;
+	while (getline(fin,tmp))
+		cur.ln[++cur.size] = stylize(tmp);
 		
 	fin.close();
 }

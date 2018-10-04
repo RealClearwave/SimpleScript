@@ -29,24 +29,24 @@ IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=6
+UnitCount=7
 
 [VersionInfo]
 Major=1
 Minor=7
-Release=1
-Build=310
+Release=3
+Build=336
 LanguageID=2052
 CharsetID=1252
 CompanyName=
-FileVersion=1.7.1.310
+FileVersion=1.7.3.336
 FileDescription=An Light Script Emulator
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=SimpleScript
-ProductVersion=1.7.1.310
+ProductVersion=1.7.3.336
 AutoIncBuildNr=1
 SyncProduct=1
 
@@ -109,4 +109,14 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=1
+
+[Unit7]
+FileName=stylize.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 
