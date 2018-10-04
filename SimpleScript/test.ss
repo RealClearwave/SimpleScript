@@ -1,4 +1,6 @@
-a=add(a,1)
-dspv(a)
+a=input()
+b=input()
+c=mul(a,b)
+dspv(c)
 endl()
 goto(1)

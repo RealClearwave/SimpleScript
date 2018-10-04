@@ -16,6 +16,7 @@ void variMove(std::string x,int mv);
 int variFetch(std::string x);
 void variAdd(std::string x,std::string a);
 void variMul(std::string x,std::string a);
+void variDiv(std::string x,std::string a);
 bool isVari(std::string x);
 #define LESS 0
 #define EQUAL 1

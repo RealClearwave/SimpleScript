@@ -5,7 +5,8 @@
 
 std::string id2str[maxfunc] = {
 	"print","println","delay","isvari","decv","getv","dspv",
-	"add","input","comp","if","goto","endl"
+	"add","input","comp","if","goto","endl","rand","sub","mul",
+	"div"
 };
 std::map <std::string,int> gramp;
 

@@ -7,6 +7,56 @@
 	#include <unistd.h>
 #endif
 
+void delay(double sec);
+int delay0(std::string argv[]);
+int print(std::string argv[]);
+int println(std::string argv[]);
+int prblnk(std::string argv[]);
+int calisVari(std::string argv[]);
+int decVari(std::string argv[]);
+int addVari(std::string argv[]);
+int subVari(std::string argv[]);
+int mulVari(std::string argv[]);
+int divVari(std::string argv[]);
+int getVari(std::string argv[]);
+int dspVari(std::string argv[]);
+int cinVari(std::string argv[]);
+int comp(std::string argv[]);
+int if_sel(std::string argv[]);
+int go_to(std::string argv[]);
+int crnd(std::string argv[]);
+
+int (*functbl[maxfunc])(std::string argv[]) = {
+	print,println,delay0,calisVari,decVari,getVari,dspVari,
+	addVari,cinVari,comp,if_sel,go_to,prblnk,crnd,subVari,
+	mulVari,divVari
+};
+
+int args[maxfunc] = {
+	1,1,1,1,2,1,1,2,0,1,3,1,0,0
+};
+int execPro(int id, ...){
+	std::string argv[maxarg];
+	int argc = 0;
+	
+	va_list sArgv; 
+    va_start(sArgv, id);
+	for (int i=1;i<=args[id];i++) {
+		argv[argc++] = va_arg(sArgv, char*);
+	}
+	
+	va_end(sArgv);
+	int ret = functbl[id](argv);
+	
+	
+	return ret;
+}
+
+int execPro(int id, std::string argv[]){
+	int ret = functbl[id](argv);
+	return ret;
+}
+
 void delay(double sec){
 	#ifdef _WIN32
 		Sleep(sec*1000);
@@ -60,6 +110,58 @@ int addVari(std::string argv[]){
 		
 	return a+b;
 }
+
+int subVari(std::string argv[]){
+	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
+	std::string x = argv[0],y = argv[1];
+	int a,b;
+	if (isVari(x))
+		a = variFetch(x);
+	else
+		a = std::stoi(x);
+		
+	if (isVari(y))
+		b = variFetch(y);
+	else
+		b = std::stoi(y);
+		
+	return a-b;
+}
+
+int mulVari(std::string argv[]){
+	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
+	std::string x = argv[0],y = argv[1];
+	int a,b;
+	if (isVari(x))
+		a = variFetch(x);
+	else
+		a = std::stoi(x);
+		
+	if (isVari(y))
+		b = variFetch(y);
+	else
+		b = std::stoi(y);
+		
+	return a*b;
+}
+
+int divVari(std::string argv[]){
+	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
+	std::string x = argv[0],y = argv[1];
+	int a,b;
+	if (isVari(x))
+		a = variFetch(x);
+	else
+		a = std::stoi(x);
+		
+	if (isVari(y))
+		b = variFetch(y);
+	else
+		b = std::stoi(y);
+		
+	return a/b;
+}
+
 int getVari(std::string argv[]){
 	return variFetch(argv[0]);
 } 
@@ -70,11 +172,6 @@ int dspVari(std::string argv[]){
 
 int cinVari(std::string argv[]){
 	int t;std::cin>>t;
-	if (!isVari(argv[0]))
-		variPush(argv[0],t);
-	else
-		variMove(argv[0],t);
-		
 	return t;
 } 
 
@@ -116,32 +213,6 @@ int go_to(std::string argv[]) {
 	return line;
 }
 
-int (*functbl[maxfunc])(std::string argv[]) = {
-	print,println,delay0,calisVari,decVari,getVari,dspVari,
-	addVari,cinVari,comp,if_sel,go_to,prblnk
-};
-
-int args[maxfunc] = {
-	1,1,1,1,2,1,1,2,1,1,3,1,0
-};
-int execPro(int id, ...){
-	std::string argv[maxarg];
-	int argc = 0;
-	
-	va_list sArgv; 
-    va_start(sArgv, id);
-	for (int i=1;i<=args[id];i++) {
-		argv[argc++] = va_arg(sArgv, char*);
-	}
-	
-	va_end(sArgv);
-	int ret = functbl[id](argv);
-	
-	
-	return ret;
-}
-
-int execPro(int id, std::string argv[]){
-	int ret = functbl[id](argv);
-	return ret;
+int crnd(std::string argv[]){
+	return rand();
 }

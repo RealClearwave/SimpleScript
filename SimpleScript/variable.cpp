@@ -38,6 +38,13 @@ void variMul(std::string x,std::string a){
 		variMove(x,variFetch(x) * std::stoi(a.c_str()));
 }
 
+void variDiv(std::string x,std::string a){
+	if (isVari(a))
+		variMove(x,variFetch(x) / variFetch(a));
+	else
+		variMove(x,variFetch(x) / std::stoi(a.c_str()));
+}
+
 int variCmp(std::string x,std::string y){
 	int a = variFetch(x),b = variFetch(y);
 	if (x < y) return LESS;
