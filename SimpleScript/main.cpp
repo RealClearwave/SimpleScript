@@ -2,8 +2,8 @@
 #include <string>
 #include "SimpleScript.h"
 
-int main() {
+int main(int argc,char* argv[]) {
 	graInit();
-	fExe("test.ss");
+	fExe(argv[1]);
 	return 0;
 }
