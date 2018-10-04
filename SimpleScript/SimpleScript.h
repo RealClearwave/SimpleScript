@@ -1,5 +1,5 @@
 #include <string>
-const std::string VERS = "1.4c";
+const std::string VERS = "1.6a";
 
 //calling procedures
 const int  maxarg = 1001;

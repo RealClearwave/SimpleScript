@@ -26,15 +26,16 @@ int if_sel(std::string argv[]);
 int go_to(std::string argv[]);
 int crnd(std::string argv[]);
 int cret(std::string argv[]);
+int quit(std::string argv[]);
 
 int (*functbl[maxfunc])(std::string argv[]) = {
 	print,println,delay0,calisVari,decVari,getVari,dspVari,
-	addVari,cinVari,comp,if_sel,go_to,prblnk,crnd,subVari,
-	mulVari,divVari,cret
+	addVari,cinVari,comp,if_sel,go_to,prblnk,crnd,
+	subVari,mulVari,divVari,cret,quit
 };
 
 int args[maxfunc] = {
-	1,1,1,1,2,1,1,2,0,1,3,1,0,0,0
+	1,1,1,1,2,1,1,2,0,1,3,1,0,0,2,2,2,0,0
 };
 int execPro(int id, ...){
 	std::string argv[maxarg];
@@ -221,4 +222,8 @@ int crnd(std::string argv[]){
 int cret(std::string argv[]){
 	fRet();
 	return 0;
+}
+
+int quit(std::string argv[]){
+	exit(0);
 }

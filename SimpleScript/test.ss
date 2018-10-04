@@ -2,7 +2,7 @@ a=input()
 b=div(a,2)
 c=mul(b,2)
 if(a=c,goto(6);,goto(8););
-
+exit();
 println(Even);
 return();
 println(Odd);
