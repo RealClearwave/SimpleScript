@@ -31,6 +31,10 @@ int println(std::string argv[]){
 	return 0;
 }
 
+int prblnk(std::string argv[]){
+	std::cout<<std::endl;
+	return 0;
+} 
 int calisVari(std::string argv[]){
 	return  (int)(isVari(argv[0]));
 }
@@ -106,13 +110,19 @@ int if_sel(std::string argv[]){
 	return (int)(workd);
 }
 
+int go_to(std::string argv[]) {
+	int line = std::stoi(argv[0]);
+	fJump(line);
+	return line;
+}
+
 int (*functbl[maxfunc])(std::string argv[]) = {
 	print,println,delay0,calisVari,decVari,getVari,dspVari,
-	addVari,cinVari,comp,if_sel
+	addVari,cinVari,comp,if_sel,go_to,prblnk
 };
 
 int args[maxfunc] = {
-	1,1,1,1,2,1,1,2,1,1,3
+	1,1,1,1,2,1,1,2,1,1,3,1,0
 };
 int execPro(int id, ...){
 	std::string argv[maxarg];

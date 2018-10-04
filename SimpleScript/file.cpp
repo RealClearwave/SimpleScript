@@ -1,6 +1,7 @@
 #include "SimpleScript.h"
 #include <string>
 #include <fstream>
+#include <iostream>
 #define max_lines 10001
 struct File{
 	std::string ln[max_lines];
@@ -25,7 +26,7 @@ bool fNext(){
 }
 
 void fJump(int e){
-	cur.esp = e;
+	cur.esp = e-1;
 }
 
 void fExe(std::string fn){
