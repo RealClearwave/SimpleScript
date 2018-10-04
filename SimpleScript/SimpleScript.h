@@ -1,5 +1,5 @@
 #include <string>
-const std::string VERS = "1.6a";
+const std::string VERS = "1.7a";
 
 //calling procedures
 const int  maxarg = 1001;
@@ -29,3 +29,6 @@ bool fNext();
 void fJump(int e);
 void fExe(std::string fn);
 void fRet();
+int  mExe(std::string ms);
+void mDec(std::string ms);
+void fign(std::string fn);

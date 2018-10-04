@@ -1,9 +1,7 @@
-a=input()
-b=div(a,2)
-c=mul(b,2)
-if(a=c,goto(6);,goto(8););
+decl(helo);
+print(Hello);
+call(hello);
+^
+
+call(helo);
 exit();
-println(Even);
-return();
-println(Odd);
-return();
