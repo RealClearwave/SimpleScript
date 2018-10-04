@@ -1,5 +1,5 @@
 # SimpleScript
 A Simple Script
 
-##Grammar
+## Grammar
 **please goto [Wiki](https://github.com/Fedoraer/SimpleScript/wiki).
