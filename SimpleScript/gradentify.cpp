@@ -28,7 +28,7 @@ bool isNum(std::string x){
 	return true;
 }
 
-void graDentify(std::string x){
+void graDentify(std::string x){ 
 	if (x[0] == '#') return; 
 	std::string v,c,a,tmp;
 	bool isret = false; 

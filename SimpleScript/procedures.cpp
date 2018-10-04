@@ -39,7 +39,7 @@ int (*functbl[maxfunc])(std::string argv[]) = {
 };
 
 int args[maxfunc] = {
-	1,1,1,1,2,1,1,2,0,1,
+	1,1,1,1,1,1,1,2,0,1,
 	3,1,0,0,2,2,2,0,0,1,
 	1,3
 };
@@ -97,8 +97,8 @@ int calisVari(std::string argv[]){
 	return  (int)(isVari(argv[0]));
 }
 
-int decVari(std::string argv[]){
-	variPush(argv[0],std::stoi(argv[1]));
+int decVari(std::string argv[]){ //
+	variPush(argv[0],0);
 	return 0;
 }
 
@@ -247,10 +247,11 @@ int crepeat(std::string argv[]){ //3 args
 	int start = std::stoi(argv[1]),end = std::stoi(argv[2]);
 	if (!isVari(var)) variPush(var,start); else variMove(var,start);
 	variMove(var,variFetch(var)-1);
-	while (variFetch(var) < end){
+	while (variFetch(var) <= end){
 		variMove(var,variFetch(var)+1);
-		if (variFetch(var) < end) fExeuntil("}");
+		if (variFetch(var) <= end) fExeuntil("}");
 	}
 	
+	fign("}");
 	return end - start + 1;
 }
