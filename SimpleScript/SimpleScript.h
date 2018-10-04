@@ -28,4 +28,4 @@ void fLoad(std::string fn);
 bool fNext();
 void fJump(int e);
 void fExe(std::string fn);
-
+void fRet();

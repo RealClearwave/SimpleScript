@@ -1,6 +1,9 @@
 a=input()
-b=input()
-c=mul(a,b)
-dspv(c)
-endl()
-goto(1)
+b=div(a,2)
+c=mul(b,2)
+if(a=c,goto(6);,goto(8););
+
+println(Even);
+return();
+println(Odd);
+return();

@@ -6,7 +6,7 @@
 std::string id2str[maxfunc] = {
 	"print","println","delay","isvari","decv","getv","dspv",
 	"add","input","comp","if","goto","endl","rand","sub","mul",
-	"div"
+	"div","return"
 };
 std::map <std::string,int> gramp;
 
@@ -29,6 +29,7 @@ bool isNum(std::string x){
 }
 
 void graDentify(std::string x){
+	
 	std::string v,c,a,tmp;
 	bool isret = false; 
 	int cma = x.find(";"),ef;
@@ -60,7 +61,9 @@ void graDentify(std::string x){
 	
 	c = tmp.substr(0,lf);
 	a = tmp.substr(lf+1);
-	while (a[a.length()-1] == ')' || a[a.length()-1] == ';') a = a.substr(0,a.length()-1);
+	if (a[a.length()-1] == ';') a = a.substr(0,a.length()-1);
+	if (a[a.length()-1] == ')') a = a.substr(0,a.length()-1);
+	
 	//std::cout<<v<<'_'<<c<<'_'<<a<<std::endl;
 
 	
