@@ -1,4 +1,4 @@
-a=input()
-b=input()
-c=mul(a,b)
+a = input()
+b = input()
+c = add(a,b)
 print(c);

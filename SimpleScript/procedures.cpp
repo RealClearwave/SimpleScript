@@ -18,8 +18,6 @@ int addVari(std::string argv[]);
 int subVari(std::string argv[]);
 int mulVari(std::string argv[]);
 int divVari(std::string argv[]);
-int getVari(std::string argv[]);
-int dspVari(std::string argv[]);
 int cinVari(std::string argv[]);
 int comp(std::string argv[]);
 int if_sel(std::string argv[]);
@@ -32,16 +30,14 @@ int exefunc(std::string argv[]);
 int crepeat(std::string argv[]);
 
 int (*functbl[maxfunc])(std::string argv[]) = {
-	print,println,delay0,calisVari,decVari,getVari,dspVari,
-	addVari,cinVari,comp,if_sel,go_to,prblnk,crnd,
-	subVari,mulVari,divVari,cret,quit,decfunc,exefunc,
-	crepeat
+	print,println,delay0,calisVari,decVari,addVari,cinVari,
+	comp,if_sel,go_to,prblnk,crnd,subVari,mulVari,
+	divVari,cret,quit,decfunc,exefunc,crepeat
 };
 
 int args[maxfunc] = {
-	1,1,1,1,1,1,1,2,0,1,
-	3,1,0,0,2,2,2,0,0,1,
-	1,3
+	1,1,1,1,1,2,0,1,3,1,
+	0,0,2,2,2,0,0,1,1,3
 };
 int execPro(int id, ...){
 	std::string argv[maxarg];
