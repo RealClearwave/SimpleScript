@@ -22,6 +22,6 @@ Developing. There are following TODO items:
 	- [ ] closure
 
 ## Boot
-root@fenlaptop# **SimpleScript** filename
+root@fenlaptop# **SimpleScript[.exe]** filename
 ## Grammar
 please see [Wiki](https://github.com/Fedoraer/SimpleScript/wiki).
