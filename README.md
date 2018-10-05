@@ -1,6 +1,6 @@
 # SimpleScript
 A Simple Script
-use '-std=c++11' while compiling.
+use compile flag '-std=c++11' while compiling.
 
 ## Status
 Developing. There are following TODO items:
@@ -21,4 +21,4 @@ Developing. There are following TODO items:
 ## Boot
 root@fenlaptop# **SimpleScript** filename
 ## Grammar
-please goto [Wiki](https://github.com/Fedoraer/SimpleScript/wiki).
+please see [Wiki](https://github.com/Fedoraer/SimpleScript/wiki).
