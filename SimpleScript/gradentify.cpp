@@ -11,16 +11,13 @@ std::string id2str[maxfunc] = {
 std::map <std::string,int> gramp;
 
 void graInit(){
-	//cout<<"Grammer Initalize...";
 	int i = -1;
 	while (id2str[++i] != ""){
 		gramp[id2str[i]] = i;
 	}
-	//cout<<"[OK]"<<endl;
 }
 
 bool isNum(std::string x){
-	//std::cout<<x<<std::endl;
 	if (x.length() == 0) return false;
 	for (int i=0;i<x.length();i++)
 		if (x[i]<'0' || x[i] > '9') return false;
@@ -28,8 +25,14 @@ bool isNum(std::string x){
 	return true;
 }
 
-void graDentify(std::string x){ 
-	if (x[0] == '#') return; 
+std::string graDentify(std::string x){ 
+	if (x[0] == '#') return "Remarked";
+	if (x.find(";") == -1 && x.find("=") == -1){
+		if (isVari(x)) return std::to_string(variFetch(x));
+		else if (isNum(x)) return x;
+		else x += ";";
+	}
+	
 	std::string v,c,a,tmp;
 	bool isret = false; 
 	int cma = x.find(";"),ef;
@@ -50,12 +53,12 @@ void graDentify(std::string x){
 		a = tmp;
 		if (isVari(a)){
 			variMove(v,variFetch(a));
-			return;
+			return a;
 		}
 		if (isNum(a)){
 			//std::cout<<a<<std::endl;
 			variMove(v,std::stoi(a));
-			return;
+			return a;
 		}
 	}
 	
@@ -65,11 +68,13 @@ void graDentify(std::string x){
 	if (a[a.length()-1] == ')') a = a.substr(0,a.length()-1);
 	
 	//std::cout<<v<<'_'<<c<<'_'<<a<<std::endl;
-
+	//std::cout<<std::endl;
 	
 	int cid = gramp[c],last = 0,argc = 0;
 	std::string argv[maxarg];
 	for (int i=0;i<a.length();i++){
+		if (a[i] == '(') while (a[i] != ')') i++;
+		if (a[i] == '"') {last++;i++;while (a[i] != '"') i++;a[i] = ' ';}
 		if (a[i] == ','){
 			argv[argc++] = a.substr(last,i-last);
 			last = i+1;
@@ -78,9 +83,16 @@ void graDentify(std::string x){
 	
 	argv[argc] = a.substr(last);
 	
+	for (int i=0;i<=argc;i++){
+		argv[i] = graDentify(argv[i]);
+		//std::cout<<argv[i]<<' ';
+	} 
+	
 	int ret = execPro(cid,argv); 
 	if (isret){
 		variMove(v,ret);
 	}
 	
+	//std::cout<<ret<<std::endl;
+	return std::to_string(ret);
 }

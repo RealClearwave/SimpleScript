@@ -7,7 +7,7 @@ int execPro(int id, ...);
 int execPro(int id, std::string argv[]);
 //Grammar
 void graInit();
-void graDentify(std::string x); 
+std::string graDentify(std::string x);
 
 //Variable
 void variPush(std::string x,int org = 0);

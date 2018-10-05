@@ -1,3 +1,2 @@
-for(i,1,10000){
-	dspv(i);
-}
+a=add(add(1,2),add(3,4))
+dspv(a);

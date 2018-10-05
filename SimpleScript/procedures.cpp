@@ -245,8 +245,7 @@ int exefunc(std::string argv[]){
 int crepeat(std::string argv[]){ //3 args
 	std::string var = argv[0];
 	int start = std::stoi(argv[1]),end = std::stoi(argv[2]);
-	if (!isVari(var)) variPush(var,start); else variMove(var,start);
-	variMove(var,variFetch(var)-1);
+	if (!isVari(var)) variPush(var,start-1); else variMove(var,start-1);
 	while (variFetch(var) <= end){
 		variMove(var,variFetch(var)+1);
 		if (variFetch(var) <= end) fExeuntil("}");
