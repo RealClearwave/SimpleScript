@@ -137,7 +137,6 @@ int subVari(std::string argv[]){
 }
 
 int mulVari(std::string argv[]){
-	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
 	std::string x = argv[0],y = argv[1];
 	int a,b;
 	if (isVari(x))
@@ -149,7 +148,8 @@ int mulVari(std::string argv[]){
 		b = variFetch(y);
 	else
 		b = std::stoi(y);
-		
+	
+	//std::cout<<a<<' '<<b<<std::endl;
 	return a*b;
 }
 

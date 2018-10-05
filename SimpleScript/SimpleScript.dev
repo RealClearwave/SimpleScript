@@ -28,25 +28,25 @@ Folders=
 IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0000000000000000000000000
+CompilerSettings=0000000000000000001000000
 UnitCount=7
 
 [VersionInfo]
 Major=1
 Minor=9
-Release=7
-Build=420
+Release=9
+Build=443
 LanguageID=2052
 CharsetID=1252
 CompanyName=
-FileVersion=1.9.7.420
+FileVersion=1.9.9.443
 FileDescription=An Light Script Emulator
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=SimpleScript
-ProductVersion=1.9.7.420
+ProductVersion=1.9.9.443
 AutoIncBuildNr=1
 SyncProduct=1
 

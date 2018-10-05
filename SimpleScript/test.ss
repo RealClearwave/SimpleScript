@@ -1,2 +1,4 @@
-a=add(add(1,2),add(3,4))
-dspv(a);
+a=input()
+b=input()
+c=mul(a,b)
+print(c);

@@ -26,11 +26,14 @@ bool isNum(std::string x){
 }
 
 std::string graDentify(std::string x){ 
+	//std::cout<<x<<std::endl;
+	if (x.length() == 0) return "0";
 	if (x[0] == '#') return "Remarked";
 	if (x.find(";") == -1 && x.find("=") == -1){
-		if (isVari(x)) return std::to_string(variFetch(x));
-		else if (isNum(x)) return x;
-		else x += ";";
+		if (x[0] == '&') return x.substr(1,x.length()-1);
+		else if (isVari(x)) return std::to_string(variFetch(x));
+		else if (x.find("(") != -1) x += ";";
+		else return x;
 	}
 	
 	std::string v,c,a,tmp;
@@ -93,6 +96,6 @@ std::string graDentify(std::string x){
 		variMove(v,ret);
 	}
 	
-	//std::cout<<ret<<std::endl;
+	//std::cout<<v<<' '<<ret<<std::endl;
 	return std::to_string(ret);
 }
