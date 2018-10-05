@@ -8,15 +8,18 @@ Developing. There are following TODO items:
     - [x] Line Transform
     - [x] recursion
     - [ ] Variable Identifier
-- [ ] Stylizer
+- [x] Stylizer (*Partial*)
     - [x] Space Erazer
     - [ ] Astyle Enhanced
 - [x] Executer
-- [ ] Variable (*Partial*)
+- [x] Variable (*Partial*)
 	- [x] basic(Integer)
 	- [ ] other(String,Double,Float...)
 	- [ ] Structure
-
+- [x] FileSystem (*Partial*)
+	- [x] SingleFile
+	- [ ] includes
+	- [ ] closure
 
 ## Boot
 root@fenlaptop# **SimpleScript** filename
