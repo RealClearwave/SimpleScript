@@ -1,6 +1,6 @@
 # SimpleScript
 A Simple Script
-use compile flag '-std=c++11' while compiling.
+set compile flag '-std=c++11'.
 
 ## Status
 Developing. There are following TODO items:
