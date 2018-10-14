@@ -1,0 +1,4 @@
+decl(prt){
+	println("Hello,World!");
+	return();
+}

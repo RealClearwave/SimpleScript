@@ -58,6 +58,7 @@ void fExeuntil(std::string flg){
 	//std::cout<<"Entered f with "<<cur.ln[cur.esp]<<std::endl;
 	int te = cur.esp;cur.esp++;
 	while (cur.ln[cur.esp] != flg){
+		//std::cout<<cur.ln[cur.esp]<<std::endl;
 		graDentify(cur.ln[cur.esp]);
 		cur.esp++;
 	}
@@ -76,3 +77,16 @@ int  mExe(std::string ms){
 	fJump(ln+1);
 	return variFetch("retv");
 }
+
+void ldmod(std::string fn){
+	cur.size--;
+	fn += ".fmd";
+	std::ifstream fin(fn.c_str());
+	std::string tmp;
+	
+	while (getline(fin,tmp)){
+		cur.ln[++cur.size] = stylize(tmp);
+	}
+	
+	return;
+} 

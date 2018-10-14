@@ -11,6 +11,7 @@ std::string graDentify(std::string x);
 
 //Variable
 void variPush(std::string x,int org = 0);
+void variClear(std::string x);
 void variMove(std::string x,int mv);
 int variFetch(std::string x);
 void variAdd(std::string x,std::string a);
@@ -32,6 +33,6 @@ int  mExe(std::string ms);
 void mDec(std::string ms);
 void fign(std::string fn);
 void fExeuntil(std::string flg);
-
+void ldmod(std::string fn);
 //Stylize
 std::string stylize(std::string ln);

@@ -6,7 +6,7 @@
 std::string id2str[maxfunc] = {
 	"print","println","delay","isvari","decv","add","input",
 	"comp","if","goto","endl","rand","sub","mul",
-	"div","return","exit","decl","call","for"
+	"div","return","exit","decl","call","for","import"
 };
 std::map <std::string,int> gramp;
 
@@ -20,7 +20,7 @@ void graInit(){
 bool isNum(std::string x){
 	if (x.length() == 0) return false;
 	for (int i=0;i<x.length();i++)
-		if (x[i]<'0' || x[i] > '9') return false;
+		if (x[i] != '[' && x[i] != ']' && (x[i]<'0' || x[i] > '9')) return false;
 	
 	return true;
 }
@@ -30,6 +30,7 @@ std::string graDentify(std::string x){
 	if (x.length() == 0) return "0";
 	if (x[0] == '#') return "Remarked";
 	if (x.find(";") == -1 && x.find("=") == -1){
+		//std::cout<<x<<' '<<isVari(x)<<std::endl;
 		if (x[0] == '&') return x.substr(1,x.length()-1);
 		else if (isVari(x)) return std::to_string(variFetch(x));
 		else if (x.find("(") != -1) x += ";";
