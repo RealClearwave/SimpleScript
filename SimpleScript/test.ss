@@ -1,2 +1,1 @@
-import(builtin/math);
-call(prt);
+print(H,e,l,l,o,",",w,o,r,l,d);

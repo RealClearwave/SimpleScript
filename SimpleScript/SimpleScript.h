@@ -3,7 +3,6 @@
 //calling procedures
 const int  maxarg = 1001;
 const int  maxfunc= 1001;
-int execPro(int id, ...);
 int execPro(int id, std::string argv[]);
 //Grammar
 void graInit();

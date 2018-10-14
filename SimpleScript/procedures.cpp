@@ -36,28 +36,6 @@ int (*functbl[maxfunc])(std::string argv[]) = {
 	divVari,cret,quit,decfunc,exefunc,crepeat,mimp
 };
 
-int args[maxfunc] = {
-	1,1,1,1,1,2,0,1,3,1,
-	0,0,2,2,2,0,0,1,1,3,
-	1
-};
-int execPro(int id, ...){
-	std::string argv[maxarg];
-	int argc = 0;
-	
-	va_list sArgv; 
-    va_start(sArgv, id);
-	for (int i=1;i<=args[id];i++) {
-		argv[argc++] = va_arg(sArgv, char*);
-	}
-	
-	va_end(sArgv);
-	int ret = functbl[id](argv);
-	
-	
-	return ret;
-}
-
 int execPro(int id, std::string argv[]){
 	int ret = functbl[id](argv);
 	return ret;
@@ -78,12 +56,19 @@ int delay0(std::string argv[]){
 }
 
 int print(std::string argv[]){
-	std::cout<<argv[0];
+	int i = -1; 
+	while(argv[++i] != "") 
+		std::cout<<argv[i];
+		
 	return 0;
 }
 
 int println(std::string argv[]){
-	std::cout<<argv[0]<<std::endl;
+	int i = -1; 
+	while(argv[++i] != "") 
+		std::cout<<argv[i];
+	
+	std::cout<<std::endl;
 	return 0;
 }
 
