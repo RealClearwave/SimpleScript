@@ -13,7 +13,7 @@ Developing. There are following TODO items:
     - [ ] Astyle Enhanced
 - [x] Executer
 - [x] Variable (*Partial*)
-	- [x] basic(Integer,Array)
+	- [x] basic(Integer)
 	- [ ] other(String,Double,Float...)
 	- [ ] Structure
 - [x] FileSystem (*Partial*)

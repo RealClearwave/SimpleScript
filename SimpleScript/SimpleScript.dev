@@ -32,21 +32,21 @@ CompilerSettings=0000000000000000001000000
 UnitCount=7
 
 [VersionInfo]
-Major=1
-Minor=9
-Release=9
-Build=495
+Major=2
+Minor=0
+Release=1
+Build=512
 LanguageID=2052
 CharsetID=1252
 CompanyName=
-FileVersion=1.9.9.495
+FileVersion=2.0.1.512
 FileDescription=An Light Script Emulator
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=SimpleScript
-ProductVersion=1.9.9.495
+ProductVersion=2.0.1.512
 AutoIncBuildNr=1
 SyncProduct=1
 

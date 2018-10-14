@@ -20,13 +20,14 @@ void fLoad(std::string fn){
 	std::ifstream fin(fn.c_str());
 	while (getline(fin,tmp))
 		cur.ln[++cur.size] = stylize(tmp);
-		
+	
+	cur.ln[++cur.size] = "exit();";
 	fin.close();
 }
 
 bool fNext(){
 	if (++cur.esp > cur.size) return false;
-	
+	//std::cout<<cur.esp<<' '<<cur.ln[cur.esp]<<std::endl;
 	graDentify(cur.ln[cur.esp]);
 	return true;
 }
@@ -79,13 +80,19 @@ int  mExe(std::string ms){
 }
 
 void ldmod(std::string fn){
-	cur.size--;
-	fn += ".fmd";
+	fn += ".fmd";//std::cout<<fn<<std::endl;
 	std::ifstream fin(fn.c_str());
 	std::string tmp;
 	
 	while (getline(fin,tmp)){
 		cur.ln[++cur.size] = stylize(tmp);
+		std::string t = cur.ln[cur.size];
+		if (t.find("decl") != -1){
+			int p0 = t.find("("),p1 = t.find(")");
+			std::string k = t.substr(p0+1,p1-p0-1);
+			//std::cout<<k<<' '<<cur.size+1<<std::endl;
+			cur.fun2ln[k] = cur.size;
+		}
 	}
 	
 	return;
