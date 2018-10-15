@@ -15,6 +15,7 @@ Developing. There are following TODO items:
 - [x] Variable (*Partial*)
 	- [x] basic(Integer)
 	- [ ] other(String,Double,Float...)
+	- [x] array support
 	- [ ] Structure
 - [x] FileSystem (*Partial*)
 	- [x] SingleFile
