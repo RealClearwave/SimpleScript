@@ -1,3 +1,4 @@
+#pragma once
 #include "SimpleScript.h"
 #include <string>
 #include <fstream>
@@ -60,7 +61,8 @@ void fExeuntil(std::string flg){
 	int te = cur.esp;cur.esp++;
 	while (cur.ln[cur.esp] != flg){
 		//std::cout<<cur.ln[cur.esp]<<std::endl;
-		graDentify(cur.ln[cur.esp]);
+		if (cur.ln[cur.esp].find("return") == -1)
+			graDentify(cur.ln[cur.esp]);
 		cur.esp++;
 	}
 	
@@ -73,9 +75,24 @@ void mDec(std::string ms){
 	fign("}");
 }
 
-int  mExe(std::string ms){
-	int ln = cur.fun2ln[ms];
-	fJump(ln+1);
+int  mExe(std::string argv[]){
+	int ln = cur.fun2ln[argv[0]],i = 0;
+	while (argv[++i] != ""){
+		//std::cout<<argv[i]<<' '<<i<<std::endl;
+		std::string tmp = argv[0] + "_" + std::to_string(i) + "_";
+		//std::cout<<tmp<<" Created."<<std::endl;
+		if (!isVari(tmp)) variPush(tmp,std::stoi(argv[i])); else variMove(tmp,std::stoi(argv[i]));
+	}
+	
+	i--;
+	std::string tmp = argv[0] + "argc";
+	//std::cout<<tmp<<' '<<i<<std::endl;
+	if (!isVari(tmp)) variPush(tmp,i); else variMove(tmp,i);
+	
+	int te = cur.esp;
+	cur.esp = ln;fExeuntil("}");
+	//std::cout<<"G:"<<variFetch("retv")<<std::endl;
+	cur.esp = te;
 	return variFetch("retv");
 }
 

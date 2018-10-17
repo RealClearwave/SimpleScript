@@ -1,3 +1,4 @@
+#pragma once
 #include "SimpleScript.h"
 #include <iostream>
 #include <stdarg.h>
@@ -120,6 +121,7 @@ int subVari(std::string argv[]){
 }
 
 int mulVari(std::string argv[]){
+	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
 	std::string x = argv[0],y = argv[1];
 	int a,b;
 	if (isVari(x))
@@ -132,7 +134,7 @@ int mulVari(std::string argv[]){
 	else
 		b = std::stoi(y);
 	
-	//std::cout<<a<<' '<<b<<std::endl;
+	//std::cout<<a*b<<std::endl;
 	return a*b;
 }
 
@@ -222,13 +224,16 @@ int decfunc(std::string argv[]){
 }
 
 int exefunc(std::string argv[]){
-	return mExe(argv[0]);
+	return mExe(argv);
 }
 
 int crepeat(std::string argv[]){ //3 args
 	std::string var = argv[0];
-	//std::cout<<"Begin:"<<var<<std::endl;
-	int start = std::stoi(argv[1]),end = std::stoi(argv[2]),iorg = 0;
+	int start,end;
+	if (isVari(argv[1])) start = variFetch(argv[1]); else start = std::stoi(argv[1]);
+	if (isVari(argv[2])) end   = variFetch(argv[2]); else end   = std::stoi(argv[2]);
+	//std::cout<<start<<' '<<end<<std::endl;
+	
 	if (!isVari(var)) variPush(var,start-1); else variMove(var,start-1);	
 	
 	while (variFetch(var) <= end){

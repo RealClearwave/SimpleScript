@@ -1,1 +1,3 @@
-print(H,e,l,l,o,",",w,o,r,l,d);
+import(builtin/math);
+a = call(pow,12,3)
+print(a);

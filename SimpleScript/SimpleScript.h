@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 
 //calling procedures
@@ -28,7 +29,7 @@ bool fNext();
 void fJump(int e);
 void fExe(std::string fn);
 void fRet();
-int  mExe(std::string ms);
+int  mExe(std::string argv[]);
 void mDec(std::string ms);
 void fign(std::string fn);
 void fExeuntil(std::string flg);
