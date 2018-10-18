@@ -19,7 +19,7 @@ Developing. There are following TODO items:
 	- [ ] Structure
 - [x] FileSystem (*Partial*)
 	- [x] SingleFile
-	- [ ] includes
+	- [x] includes
 	- [ ] closure
 
 ## Boot
