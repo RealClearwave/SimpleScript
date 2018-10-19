@@ -31,6 +31,14 @@ bool isNum(std::string x){
 	return true;
 }
 
+int isCal(std::string x){
+	if (x.find("*") != -1) return x.find("*");
+	if (x.find("/") != -1) return x.find("/");
+	if (x.find("+") != -1) return x.find("+");
+	if (x.find("-") != -1) return x.find("-");
+	return false;
+} 
+
 std::string graDentify(std::string x){ 
 	x = stylize(x);
 	//std::cout<<x<<std::endl;
@@ -40,6 +48,7 @@ std::string graDentify(std::string x){
 		//std::cout<<x<<' '<<isVari(x)<<std::endl;
 		if (x[0] == '&') return x.substr(1,x.length()-1);
 		else if (isVari(x)) return std::to_string(variFetch(x));
+		else if (isCal(x)) return calext(x);
 		else if (x.find("(") != -1) x += ";";
 		else return x;
 	}

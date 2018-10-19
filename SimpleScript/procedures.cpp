@@ -236,12 +236,12 @@ int crepeat(std::string argv[]){ //3 args
 	if (isVari(argv[2])) end   = variFetch(argv[2]); else end   = std::stoi(argv[2]);
 	//std::cout<<start<<' '<<end<<std::endl;
 	
-	if (!isVari(var)) variPush(var,start-1); else variMove(var,start-1);	
+	if (!isVari(var)) variPush(var,start); else variMove(var,start);	
 	
 	while (variFetch(var) <= end){
 		//std::cout<<variFetch(var)<<std::endl;
+		fExeuntil("}");
 		variMove(var,variFetch(var)+1);
-		if (variFetch(var) <= end) fExeuntil("}");
 	}
 	
 	fign("}");

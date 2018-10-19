@@ -66,7 +66,7 @@ void fExeuntil(std::string flg){
 		cur.esp++;
 	}
 	
-	//std::cout<<"Loop back at "<<cur.esp<<std::endl;
+	//std::cout<<"Loop back at "<<te<<std::endl;
 	cur.esp = te;
 }
 void mDec(std::string ms){

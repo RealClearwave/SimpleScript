@@ -9,6 +9,7 @@ int execPro(int id, std::string argv[]);
 void graInit();
 bool isFunc(std::string x);
 std::string graDentify(std::string x);
+int isCal(std::string x);
 
 //Variable
 void variPush(std::string x,int org = 0);
@@ -37,3 +38,4 @@ void fExeuntil(std::string flg);
 void ldmod(std::string fn);
 //Stylize
 std::string stylize(std::string ln);
+std::string calext(std::string ex);

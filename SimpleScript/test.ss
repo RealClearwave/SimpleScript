@@ -1,3 +1,5 @@
-import(builtin/math);
-a = pow( 12, 3)
-print(a);
+j = 0
+for(i,1,10){
+	j = j+i
+}
+print(j);
