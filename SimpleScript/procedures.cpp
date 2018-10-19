@@ -1,4 +1,3 @@
-#pragma once
 #include "SimpleScript.h"
 #include <iostream>
 #include <stdarg.h>

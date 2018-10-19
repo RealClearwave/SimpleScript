@@ -1,5 +1,3 @@
-//Grammer Identify
-#pragma once
 #include <map>
 #include <iostream>
 #include "SimpleScript.h"
