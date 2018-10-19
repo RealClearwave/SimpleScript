@@ -5,23 +5,20 @@ A Simple Script
 
 ## Status
 Developing. There are following TODO items:
-- [x] Grammar Identifier (*Partial*)
+- [x] Grammar Identifier
     - [x] Line Transform
     - [x] recursion
-    - [ ] Variable Identifier
+    - [x] Variable Identifier
 - [x] Stylizer (*Partial*)
-    - [x] Space Erazer
-    - [ ] Astyle Enhanced
 - [x] Executer
 - [x] Variable (*Partial*)
 	- [x] basic(Integer)
-	- [ ] other(String,Double,Float...)
 	- [x] array support
+	- [ ] other(String,Double,Float...)
 	- [ ] Structure
-- [x] FileSystem (*Partial*)
+- [x] FileSystem 
 	- [x] SingleFile
 	- [x] includes
-	- [ ] closure
 
 ## Boot
 root@fenlaptop# **SimpleScript[.exe]** filename
