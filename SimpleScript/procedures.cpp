@@ -31,12 +31,13 @@ int exefunc(std::string argv[]);
 int crepeat(std::string argv[]);
 int mimp(std::string argv[]);
 int syscl(std::string argv[]);
-
+int fret(std::string argv[]);
+ 
 int (*functbl[maxfunc])(std::string argv[]) = {
 	print,println,delay0,calisVari,decVari,addVari,cinVari,
 	comp,if_sel,go_to,prblnk,crnd,subVari,mulVari,
 	divVari,cret,quit,decfunc,exefunc,crepeat,mimp,
-	syscl
+	syscl,fret
 };
 
 int execPro(int id, std::string argv[]){
@@ -261,5 +262,15 @@ int mimp(std::string argv[]){
 
 int syscl(std::string argv[]){
 	system(argv[0].c_str());
+	return 0;
+}
+
+int fret(std::string argv[]){
+	//std::cout<<"F    R    E    T"<<std::endl;
+	if (isVari(argv[0]))
+		variMove("retv",variFetch(argv[0]));
+	else
+		variMove("retv",std::stoi(argv[0]));
+	
 	return 0;
 }

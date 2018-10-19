@@ -7,8 +7,8 @@
 std::string id2str[maxfunc] = {
 	"print","println","delay","isvari","decv","add","input",
 	"comp","if","goto","endl","rand","sub","mul",
-	"div","return","exit","decl","call","for","import",
-	"_sys"
+	"div","popback","exit","decl","call","for","import",
+	"_sys","return"
 };
 std::map <std::string,int> gramp;
 
@@ -63,7 +63,7 @@ std::string graDentify(std::string x){
 		isret = true;
 		while (ef == -1){
 			ef = x.find("="); if (ef == -1) break;
-			int c1 = c.find(0,ef,"\""),c2 = c.find(ef+1,"\"");
+			int c1 = c.find(0,ef,'\"'),c2 = c.find(ef+1,'\"');
 			if (c1 != -1 && c2 != -2) ef = -1;
 		}
 		
@@ -78,7 +78,6 @@ std::string graDentify(std::string x){
 	int lf = tmp.find("(");
 	
 	if (lf == -1 && ef != -1){
-		
 		a = tmp;
 		if (isVari(a)){
 			variMove(v,variFetch(a));

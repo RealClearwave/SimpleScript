@@ -1,8 +1,8 @@
 decl(pow){
 	j = 1
 	for($i_ite,1,pow[2]){
-		j = mul(j,pow[1])
+		j = j*pow[1]
 	}
 	
-	retv = j
+	return(j);
 }

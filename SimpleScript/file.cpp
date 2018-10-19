@@ -61,8 +61,12 @@ void fExeuntil(std::string flg){
 	int te = cur.esp;cur.esp++;
 	while (cur.ln[cur.esp] != flg){
 		//std::cout<<cur.ln[cur.esp]<<std::endl;
-		if (cur.ln[cur.esp].find("return") == -1)
-			graDentify(cur.ln[cur.esp]);
+		graDentify(cur.ln[cur.esp]);
+		
+		if (cur.ln[cur.esp].find("return") != -1)
+			break;
+		
+		
 		cur.esp++;
 	}
 	

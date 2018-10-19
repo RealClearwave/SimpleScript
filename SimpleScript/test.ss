@@ -1,6 +1,3 @@
-j = 999
-if("j = 1"){
-	print("OK");
-}^{
-	print("Fault");
-}
+import("builtin\math")
+a = pow(12,3)
+println(a);
