@@ -38,6 +38,7 @@ std::string calext(std::string ex){
 }
 
 std::string stylize(std::string ln){
+	if (ln == "}^{") return ln;
 	while (ln[0] == '	') ln = ln.substr(1,ln.length()-1);
 	while (ln[0] == ' ') ln = ln.substr(1,ln.length()-1);
 	if (ln.find("{")) ln[ln.find("{")] = ';';

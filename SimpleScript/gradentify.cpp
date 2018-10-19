@@ -40,6 +40,9 @@ int isCal(std::string x){
 } 
 
 std::string graDentify(std::string x){ 
+	if (x[0] == '\"' && x[x.length()-1] == '\"') 
+		return x.substr(1,x.length()-2);
+		
 	x = stylize(x);
 	//std::cout<<x<<std::endl;
 	if (x.length() == 0) return "0";
@@ -55,10 +58,15 @@ std::string graDentify(std::string x){
 	
 	std::string v,c,a,tmp;
 	bool isret = false; 
-	int cma = x.find(";"),ef;
+	int cma = x.find(";"),ef = -1;
 	if (cma == -1) {
 		isret = true;
-		ef = x.find("=");
+		while (ef == -1){
+			ef = x.find("="); if (ef == -1) break;
+			int c1 = c.find(0,ef,"\""),c2 = c.find(ef+1,"\"");
+			if (c1 != -1 && c2 != -2) ef = -1;
+		}
+		
 		v = x.substr(0,ef);
 		if (!isVari(v)) variPush(v,0);
 		
@@ -70,6 +78,7 @@ std::string graDentify(std::string x){
 	int lf = tmp.find("(");
 	
 	if (lf == -1 && ef != -1){
+		
 		a = tmp;
 		if (isVari(a)){
 			variMove(v,variFetch(a));
@@ -94,7 +103,7 @@ std::string graDentify(std::string x){
 	std::string argv[maxarg];
 	for (int i=0;i<a.length();i++){
 		if (a[i] == '(') while (a[i] != ')') i++;
-		if (a[i] == '"') {last++;i++;while (a[i] != '"') i++;a[i] = ' ';}
+		//if (a[i] == '"') {last++;i++;while (a[i] != '"') i++;a[i] = '\0';}
 		if (a[i] == ','){
 			argv[argc++] = a.substr(last,i-last);
 			last = i+1;
@@ -109,10 +118,11 @@ std::string graDentify(std::string x){
 	} 
 	
 	//int cid = gramp[c];
-	int ret = -2147;
-	if (isFunc(c))
+	int ret = -2147;//std::cout<<c<<std::endl;
+	if (isFunc(c)){
+		//std::cout<<gramp[c]<<std::endl;
 		ret = execPro(gramp[c],argv); 
-	else{
+	}else{
 		std::string ag[maxarg];
 		ag[0] = c;//std::cout<<argc<<std::endl;
 		for (int k=1;k<=argc+1;k++)

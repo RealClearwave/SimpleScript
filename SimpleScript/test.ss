@@ -1,5 +1,6 @@
-j = 0
-for(i,1,10){
-	j = j+i
+j = 999
+if("j = 1"){
+	print("OK");
+}^{
+	print("Fault");
 }
-print(j);

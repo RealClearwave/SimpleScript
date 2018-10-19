@@ -193,11 +193,15 @@ int if_sel(std::string argv[]){
 	std::string rgv[] = {argv[0].substr(pos,1),argv[0].substr(0,pos), argv[0].substr(pos+1)};
 	//std::cout<<rgv[0]<<' '<<rgv[1]<<' '<<rgv[2]<<std::endl;
 	if (comp(rgv)){
-		//std::cout<<"Working On Branch 1"<<std::endl;
-		graDentify(argv[1]);
+		
+		fExeuntil("}^{");
+		fign("}");
 		workd = true;
-	}else
-		graDentify(argv[2]);
+	}else{//std::cout<<"Working On Branch 1"<<std::endl;
+		fign("}^{");
+		fExeuntil("}");
+		fign("}");
+	}
 	
 	return (int)(workd);
 }
