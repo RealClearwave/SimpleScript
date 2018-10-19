@@ -23,6 +23,18 @@ std::string equext(std::string ex){
 	return ex;
 } 
 
+std::string fncext(std::string ex){
+	int ep = ex.find("(");
+	//std::cout<<ex<<std::endl;
+	while (ex[ep-1] == ' ') {
+		ex = ex.substr(0,ep-1) + ex.substr(ep);
+		ep = ex.find("(");
+	}
+	//std::cout<<ex<<std::endl;
+	
+	return ex;
+} 
+
 std::string calext(std::string ex){
 	//std::cout<<"extending "<<ex<<std::endl;
 	if (!isCal(ex)) return ex;
@@ -42,12 +54,15 @@ std::string stylize(std::string ln){
 	while (ln[0] == '	') ln = ln.substr(1,ln.length()-1);
 	while (ln[0] == ' ') ln = ln.substr(1,ln.length()-1);
 	if (ln.find("{")) ln[ln.find("{")] = ';';
-	if (ln.find("=") != -1){ //Expression
+	
+	if (ln.find("=") != -1) //Expression
 		ln = equext(ln);
-		if (isCal(ln)){
+	if (ln.find("(") != -1)
+		ln = fncext(ln);
+		
+	if (isCal(ln)){
 			std::string lf = ln.substr(ln.find("=")+1);
 			ln = ln.substr(0,ln.find("=")+1) + calext(lf);
-		}
 	}
 	
 	//std::cout<<ln<<std::endl; 

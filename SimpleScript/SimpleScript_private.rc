@@ -8,8 +8,8 @@
 // TO CHANGE VERSION INFORMATION, EDIT PROJECT OPTIONS...
 //
 1 VERSIONINFO
-FILEVERSION 2,0,4,695
-PRODUCTVERSION 2,0,4,695
+FILEVERSION 2,0,4,697
+PRODUCTVERSION 2,0,4,697
 FILETYPE VFT_APP
 {
   BLOCK "StringFileInfo"
@@ -17,14 +17,14 @@ FILETYPE VFT_APP
     BLOCK "080404E4"
     {
       VALUE "CompanyName", ""
-      VALUE "FileVersion", "2.0.4.695"
+      VALUE "FileVersion", "2.0.4.697"
       VALUE "FileDescription", "An Light Script Emulator"
       VALUE "InternalName", ""
       VALUE "LegalCopyright", ""
       VALUE "LegalTrademarks", ""
       VALUE "OriginalFilename", ""
       VALUE "ProductName", "SimpleScript"
-      VALUE "ProductVersion", "2.0.4.695"
+      VALUE "ProductVersion", "2.0.4.697"
     }
   }
   BLOCK "VarFileInfo"

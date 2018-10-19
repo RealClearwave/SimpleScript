@@ -1,3 +1,3 @@
-import("builtin\math")
-a = pow(12,3)
-println(a);
+for (i,1,10){
+	print(i);
+}
