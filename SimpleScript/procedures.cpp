@@ -30,11 +30,13 @@ int decfunc(std::string argv[]);
 int exefunc(std::string argv[]);
 int crepeat(std::string argv[]);
 int mimp(std::string argv[]);
+int syscl(std::string argv[]);
 
 int (*functbl[maxfunc])(std::string argv[]) = {
 	print,println,delay0,calisVari,decVari,addVari,cinVari,
 	comp,if_sel,go_to,prblnk,crnd,subVari,mulVari,
-	divVari,cret,quit,decfunc,exefunc,crepeat,mimp
+	divVari,cret,quit,decfunc,exefunc,crepeat,mimp,
+	syscl
 };
 
 int execPro(int id, std::string argv[]){
@@ -250,5 +252,10 @@ int crepeat(std::string argv[]){ //3 args
 
 int mimp(std::string argv[]){
 	ldmod(argv[0]);
+	return 0;
+}
+
+int syscl(std::string argv[]){
+	system(argv[0].c_str());
 	return 0;
 }

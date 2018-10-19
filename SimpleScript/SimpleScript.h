@@ -2,11 +2,12 @@
 #include <string>
 
 //calling procedures
-const int  maxarg = 1001;
-const int  maxfunc= 1001;
+const int  maxarg = 5001;
+const int  maxfunc= 5001;
 int execPro(int id, std::string argv[]);
 //Grammar
 void graInit();
+bool isFunc(std::string x);
 std::string graDentify(std::string x);
 
 //Variable

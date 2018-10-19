@@ -7,7 +7,8 @@
 std::string id2str[maxfunc] = {
 	"print","println","delay","isvari","decv","add","input",
 	"comp","if","goto","endl","rand","sub","mul",
-	"div","return","exit","decl","call","for","import"
+	"div","return","exit","decl","call","for","import",
+	"_sys"
 };
 std::map <std::string,int> gramp;
 
@@ -17,6 +18,10 @@ void graInit(){
 		gramp[id2str[i]] = i;
 	}
 }
+
+bool isFunc(std::string x){
+	return (gramp.find(x) != gramp.end());
+} 
 
 bool isNum(std::string x){
 	if (x.length() == 0) return false;
@@ -75,7 +80,7 @@ std::string graDentify(std::string x){
 	//std::cout<<v<<'_'<<c<<'_'<<a<<std::endl;
 	//std::cout<<std::endl;
 	
-	int cid = gramp[c],last = 0,argc = 0;
+	int last = 0,argc = 0;
 	std::string argv[maxarg];
 	for (int i=0;i<a.length();i++){
 		if (a[i] == '(') while (a[i] != ')') i++;
@@ -93,7 +98,20 @@ std::string graDentify(std::string x){
 		//std::cout<<argv[i]<<' ';
 	} 
 	
-	int ret = execPro(cid,argv); 
+	//int cid = gramp[c];
+	int ret = -2147;
+	if (isFunc(c))
+		ret = execPro(gramp[c],argv); 
+	else{
+		std::string ag[maxarg];
+		ag[0] = c;//std::cout<<argc<<std::endl;
+		for (int k=1;k<=argc+1;k++)
+			ag[k] = argv[k-1];
+		
+		//std::cout<<ag[0]<<' '<<ag[1]<<' '<<ag[2]<<std::endl;
+		ret = mExe(ag);
+	}
+	
 	if (isret){
 		variMove(v,ret);
 	}
