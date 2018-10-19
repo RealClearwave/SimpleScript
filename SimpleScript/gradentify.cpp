@@ -32,6 +32,7 @@ bool isNum(std::string x){
 }
 
 std::string graDentify(std::string x){ 
+	x = stylize(x);
 	//std::cout<<x<<std::endl;
 	if (x.length() == 0) return "0";
 	if (x[0] == '#') return "Remarked";

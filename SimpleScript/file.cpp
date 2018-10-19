@@ -20,7 +20,7 @@ void fLoad(std::string fn){
 	std::string tmp;
 	std::ifstream fin(fn.c_str());
 	while (getline(fin,tmp))
-		cur.ln[++cur.size] = stylize(tmp);
+		cur.ln[++cur.size] = tmp;
 	
 	cur.ln[++cur.size] = "exit();";
 	fin.close();
