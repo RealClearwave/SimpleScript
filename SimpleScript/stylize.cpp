@@ -6,36 +6,30 @@
 
 std::string equext(std::string ex){
 	int ep = ex.find("=");
-	//std::cout<<ex<<std::endl;
 	while (ex[ep-1] == ' ') {
 		ex = ex.substr(0,ep-1) + ex.substr(ep);
 		ep = ex.find("=");
 	}
-	//std::cout<<ex<<std::endl;
 	
 	while (ex[ep+1] == ' ') {
 		ex = ex.substr(0,ep+1) + ex.substr(ep+2);
 		ep = ex.find("=");
 	}
-	//std::cout<<ex<<std::endl;
 	
 	return ex;
 } 
 
 std::string fncext(std::string ex){
 	int ep = ex.find("(");
-	//std::cout<<ex<<std::endl;
 	while (ex[ep-1] == ' ') {
 		ex = ex.substr(0,ep-1) + ex.substr(ep);
 		ep = ex.find("(");
 	}
-	//std::cout<<ex<<std::endl;
 	
 	return ex;
 } 
 
 std::string calext(std::string ex){
-	//std::cout<<"extending "<<ex<<std::endl;
 	if (!isCal(ex)) return ex;
 	int op = isCal(ex);
 	std::string ret,lf = ex.substr(0,op),rt = ex.substr(op+1);
@@ -44,7 +38,6 @@ std::string calext(std::string ex){
 	if (ex[op] == '-') ret = "sub(" + lf + "," + rt + ")";
 	if (ex[op] == '*') ret = "mul(" + lf + "," + rt + ")";
 	if (ex[op] == '/') ret = "div(" + lf + "," + rt + ")";
-	//std::cout<<"returned "<<ret<<std::endl;
 	return ret;
 }
 
@@ -64,6 +57,5 @@ std::string stylize(std::string ln){
 			ln = ln.substr(0,ln.find("=")+1) + calext(lf);
 	}
 	
-	//std::cout<<ln<<std::endl; 
 	return ln;
 }

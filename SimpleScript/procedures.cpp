@@ -40,6 +40,7 @@ int (*functbl[maxfunc])(std::string argv[]) = {
 };
 
 int execPro(int id, std::string argv[]){
+	//std::cout<<"Exe "<<id<<' '<<std::endl;
 	int ret = functbl[id](argv);
 	return ret;
 }
@@ -83,13 +84,12 @@ int calisVari(std::string argv[]){
 	return  (int)(isVari(argv[0]));
 }
 
-int decVari(std::string argv[]){ //
+int decVari(std::string argv[]){ 
 	variPush(argv[0],0);
 	return 0;
 }
 
 int addVari(std::string argv[]){
-	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
 	std::string x = argv[0],y = argv[1];
 	int a,b;
 	if (isVari(x))
@@ -106,7 +106,6 @@ int addVari(std::string argv[]){
 }
 
 int subVari(std::string argv[]){
-	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
 	std::string x = argv[0],y = argv[1];
 	int a,b;
 	if (isVari(x))
@@ -123,7 +122,6 @@ int subVari(std::string argv[]){
 }
 
 int mulVari(std::string argv[]){
-	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
 	std::string x = argv[0],y = argv[1];
 	int a,b;
 	if (isVari(x))
@@ -136,12 +134,10 @@ int mulVari(std::string argv[]){
 	else
 		b = std::stoi(y);
 	
-	//std::cout<<a*b<<std::endl;
 	return a*b;
 }
 
 int divVari(std::string argv[]){
-	//std::cout<<argv[0]<<' '<<argv[1]<<std::endl;
 	std::string x = argv[0],y = argv[1];
 	int a,b;
 	if (isVari(x))
@@ -183,22 +179,29 @@ int comp(std::string argv[]){
 } 
 
 int if_sel(std::string argv[]){
-	//std::cout<<"if Working.";
-	int pos;bool workd = false;
-	pos = argv[0].find("=");
+	int pos;bool workd = false,sp2 = false;
+	pos = argv[0].find("==");
 	if (pos == -1) pos = argv[0].find("<");
+	else sp2 = true;
 	if (pos == -1) pos = argv[0].find(">");
 	
-	//std::cout<<pos<<' '<<argv[0][pos]<<std::endl;
-	std::string rgv[] = {argv[0].substr(pos,1),argv[0].substr(0,pos), argv[0].substr(pos+1)};
-	//std::cout<<rgv[0]<<' '<<rgv[1]<<' '<<rgv[2]<<std::endl;
+	std::string ag1,ag2,ag3;
+	ag1 = argv[0].substr(pos,1);
+	ag2 = argv[0].substr(0,pos);
+	ag3 = (sp2?argv[0].substr(pos+2):argv[0].substr(pos+1));
+//	if (isVari(ag1)) ag1 = std::to_string(variFetch(ag1)); 
+//	if (isVari(ag2)) ag2 = std::to_string(variFetch(ag2));
+//	if (isVari(ag3)) ag3 = std::to_string(variFetch(ag3));
+	std::string rgv[] = {ag1,ag2,ag3};
+	std::cout<<rgv[0]<<' '<<rgv[1]<<' '<<rgv[2]<<std::endl;
+	
 	if (comp(rgv)){
-		
-		fExeuntil("}^{");
+		std::cout<<"Gugu"<<std::endl; 
+		fExeuntil("}");
 		fign("}");
 		workd = true;
-	}else{//std::cout<<"Working On Branch 1"<<std::endl;
-		fign("}^{");
+	}else{
+		fign("}");
 		fExeuntil("}");
 		fign("}");
 	}
@@ -233,24 +236,21 @@ int exefunc(std::string argv[]){
 	return mExe(argv);
 }
 
-int crepeat(std::string argv[]){ //3 args
+int crepeat(std::string argv[]){ 
 	std::string var = argv[0];
 	int start,end;
 	if (isVari(argv[1])) start = variFetch(argv[1]); else start = std::stoi(argv[1]);
 	if (isVari(argv[2])) end   = variFetch(argv[2]); else end   = std::stoi(argv[2]);
-	//std::cout<<start<<' '<<end<<std::endl;
 	
 	if (!isVari(var)) variPush(var,start); else variMove(var,start);	
 	
 	while (variFetch(var) <= end){
-		//std::cout<<variFetch(var)<<std::endl;
 		fExeuntil("}");
 		variMove(var,variFetch(var)+1);
 	}
 	
 	fign("}");
 	variClear(var);
-	//std::cout<<"Ends:"<<var<<' '<<variFetch(var)<<std::endl;
 	return end - start + 1;
 }
 
@@ -265,7 +265,6 @@ int syscl(std::string argv[]){
 }
 
 int fret(std::string argv[]){
-	//std::cout<<"F    R    E    T"<<std::endl;
 	if (isVari(argv[0]))
 		variMove("retv",variFetch(argv[0]));
 	else

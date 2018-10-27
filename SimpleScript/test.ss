@@ -1,3 +1,7 @@
-for (i,1,10){
-	print(i);
+ache = input();
+if (ache<9){
+	print (ACHE_IS_OK);
+}
+else{
+	print(FAILED);
 }

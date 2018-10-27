@@ -15,7 +15,6 @@ std::string arrext(std::string x){
 	x[p0] = x[p1] = '_';
 	
 	std::string vr = x.substr(p0+1,p1-p0-1);
-	//std::cout<<vr<<std::endl;
 	if (isVari(vr)) {
 		
 		vr = std::to_string(variFetch(vr));
@@ -49,12 +48,14 @@ void variClear(std::string x){
 }
 void variMove(std::string x,int mv){
 	x = arrext(x);
-	//std::cout<<x<<' '<<mv<<std::endl;
-	varl[varmp[x]] = mv;
+	if (!isVari(x))
+		variPush(x,mv);
+	else
+		varl[varmp[x]] = mv;
 }
 
 int variFetch(std::string x){
-	x = arrext(x);//std::cout<<x<<' '<<varl[varmp[x]]<<std::endl;
+	x = arrext(x);
 	return varl[varmp[x]];
 }
 
