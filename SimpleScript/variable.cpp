@@ -1,3 +1,4 @@
+#pragma once
 #include "SimpleScript.h"
 #include <map>
 #include <string>

@@ -1,20 +1,9 @@
+#pragma once
 #include "SimpleScript.h"
 #include <string>
-#include <vector>
 #include <fstream>
-#include <iostream>
-#include <map>
-#define max_lines 10001 // Being Reduced.
-#define max_mods 301
- 
-struct File{
-	std::vector<line> ln;
-	int esp;
-	int rtl[max_lines],rtc;
-	std::map<std::string,int> fun2ln;
-}cur; 
 
-void fTrunc(std::string x){
+void File::TruncFile(std::string x){
 	int pos,last = 0;
 	while ((pos = x.find(';',last)) != -1){
 		cur.ln.push_back(line());
@@ -23,7 +12,7 @@ void fTrunc(std::string x){
 	}
 }
 
-std::string fLoad(std::string fn){
+std::string File::LoadFile(std::string fn){
 	cur.esp = -1;cur.rtc = 0;
 	cur.rtl[++cur.rtc] = 0;
 	std::string tmp,ret;
@@ -38,37 +27,37 @@ std::string fLoad(std::string fn){
 	return ret;
 }
 
-bool fAddesp(){
+bool File::SkipCurrentLine(){
 	cur.esp++;
 }
-bool fNext(){
+bool File::ExecuteNextLine(){
 	if (++cur.esp > cur.ln.size()) return false;
 	cur.ln[cur.esp].exec();
 	return true;
 }
 
-void fJump(int e){
+void File::JumpToLine(int e){
 	cur.rtl[++cur.rtc] = cur.esp;
 	cur.esp = e-1;
 }
 
-void fRet(){
+void File::DeclReturn(){
 	cur.esp = cur.rtl[cur.rtc];
 	cur.rtc--;
 }
 
-void fExe(std::string fn){
-	fTrunc(fLoad(fn));
-	while (fNext());
+void File::ExecuteScript(std::string fn){
+	TruncFile(LoadFile(fn));
+	while (ExecuteNextLine());
 	return;
 }
 
-void fign(std::string fn){
+void File::IgnoreUntil(std::string fn){
 	while (cur.ln[++cur.esp].str() != fn);
 		//std::cout<<"[Ignore]"<<cur.ln[cur.esp].str()<<std::endl;
 }
 
-void fExeuntil(std::string flg){
+void File::ExecuteScriptuntil(std::string flg){
 	int te = cur.esp;cur.esp++;
 	while (cur.ln[cur.esp].str() != flg){
 		//std::cout<<cur.ln[cur.esp].str()<<','<<flg<<std::endl;
@@ -81,12 +70,12 @@ void fExeuntil(std::string flg){
 	//std::cout<<"[finished]"<<std::endl;
 	cur.esp = te;
 }
-void mDec(std::string ms){
+void File::ModelDecode(std::string ms){
 	cur.fun2ln[ms] =cur.esp;
-	fign("}");
+	IgnoreUntil("}");
 }
 
-int  mExe(std::string argv[]){
+int  File::ModelExecute(std::string argv[]){
 	int ln = cur.fun2ln[argv[0]],i = 0;
 	while (argv[++i] != ""){
 		std::string tmp = argv[0] + "_" + std::to_string(i) + "_";
@@ -98,15 +87,15 @@ int  mExe(std::string argv[]){
 	if (!isVari(tmp)) variPush(tmp,i); else variMove(tmp,i);
 	
 	int te = cur.esp;
-	cur.esp = ln;fExeuntil("}");
+	cur.esp = ln;ExecuteScriptuntil("}");
 	cur.esp = te;
 	return variFetch("retv");
 }
 
-bool isMod(std::string x){
+bool File::isModel(std::string x){
 	return (cur.fun2ln.find(x) != cur.fun2ln.end());
 }
-void ldmod(std::string fn){
+void File::LoadModule(std::string fn){
 	fn += ".fmd";
 	std::ifstream fin(fn.c_str());
 	std::string tmp;

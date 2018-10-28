@@ -1,3 +1,4 @@
+#pragma once
 #include "SimpleScript.h"
 #include <iostream>
 #include <stdarg.h>
@@ -30,13 +31,13 @@ int exefunc(std::string argv[]);
 int crepeat(std::string argv[]);
 int mimp(std::string argv[]);
 int syscl(std::string argv[]);
-int fret(std::string argv[]);
+int DeclReturn(std::string argv[]);
 int els(std::string argv[]);
 int (*functbl[maxfunc])(std::string argv[]) = {
 	print,println,delay0,calisVari,decVari,addVari,cinVari,
 	comp,if_sel,go_to,prblnk,crnd,subVari,mulVari,
 	divVari,cret,quit,decfunc,exefunc,crepeat,mimp,
-	syscl,fret,els
+	syscl,DeclReturn,els
 };
 
 int execPro(int id, std::string argv[]){
@@ -196,14 +197,14 @@ int if_sel(std::string argv[]){
 //	std::cout<<comp(rgv)<<std::endl;
 	
 	if (comp(rgv)){
-		fExeuntil("}");
-		fign("else");
-		fign("}");
+		cur.ExecuteScriptuntil("}");
+		cur.IgnoreUntil("else");
+		cur.IgnoreUntil("}");
 		workd = true;
 	}else{//std::cout<<"Gugu"<<std::endl; 
-		fign("else");
-		fExeuntil("}");
-		fign("}");
+		cur.IgnoreUntil("else");
+		cur.ExecuteScriptuntil("}");
+		cur.IgnoreUntil("}");
 	}
 	
 	return (int)(workd);
@@ -214,7 +215,7 @@ int els(std::string argv[]){
 }
 int go_to(std::string argv[]) {
 	int line = std::stoi(argv[0]);
-	fJump(line);
+	cur.JumpToLine(line);
 	return line;
 }
 
@@ -223,7 +224,7 @@ int crnd(std::string argv[]){
 }
 
 int cret(std::string argv[]){
-	fRet();
+	cur.DeclReturn();
 	return 0;
 }
 
@@ -232,11 +233,11 @@ int quit(std::string argv[]){
 }
 
 int decfunc(std::string argv[]){
-	mDec(argv[0]);
+	cur.ModelDecode(argv[0]);
 }
 
 int exefunc(std::string argv[]){
-	return mExe(argv);
+	return cur.ModelExecute(argv);
 }
 
 int crepeat(std::string argv[]){ 
@@ -248,17 +249,17 @@ int crepeat(std::string argv[]){
 	if (!isVari(var)) variPush(var,start); else variMove(var,start);	
 	
 	while (variFetch(var) <= end){
-		fExeuntil("}");
+		cur.ExecuteScriptuntil("}");
 		variMove(var,variFetch(var)+1);
 	}
 	
-	fign("}");
+	cur.IgnoreUntil("}");
 	variClear(var);
 	return end - start + 1;
 }
 
 int mimp(std::string argv[]){
-	ldmod(argv[0]);
+	cur.LoadModule(argv[0]);
 	return 0;
 }
 
@@ -267,7 +268,7 @@ int syscl(std::string argv[]){
 	return 0;
 }
 
-int fret(std::string argv[]){
+int DeclReturn(std::string argv[]){
 	if (isVari(argv[0]))
 		variMove("retv",variFetch(argv[0]));
 	else

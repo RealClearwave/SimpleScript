@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <map>
 
 //calling procedures
@@ -42,18 +43,31 @@ bool isVari(std::string x);
 int variCmp(std::string x,std::string y);
 
 //Files
-std::string fLoad(std::string fn);
-bool fNext();
-void fJump(int e);
-void fExe(std::string fn);
-void fRet();
-int  mExe(std::string argv[]);
-void mDec(std::string ms);
-void fign(std::string fn);
-void fExeuntil(std::string flg);
-void ldmod(std::string fn);
-bool isMod(std::string x);
-bool fAddesp();
+struct File{
+	#define max_lines 10001 // Being Reduced.
+	#define max_mods 301
+	std::vector<line> ln;
+	int esp;
+	int rtl[max_lines],rtc;
+	std::map<std::string,int> fun2ln;
+	
+	void TruncFile(std::string x); 
+	std::string LoadFile(std::string fn);
+	bool ExecuteNextLine();
+	void JumpToLine(int e);
+	void ExecuteScript(std::string fn);
+	void DeclReturn();
+	int  ModelExecute(std::string argv[]);
+	void ModelDecode(std::string ms);
+	void IgnoreUntil(std::string fn);
+	void ExecuteScriptuntil(std::string flg);
+	void LoadModule(std::string fn);
+	bool isModel(std::string x);
+	bool SkipCurrentLine();
+};
+
+extern File cur; 
+
 //Stylize
 std::string SpaceErase(std::string line);
-std::string calext(std::string ex);
+std::string CalculationExtend(std::string ex);

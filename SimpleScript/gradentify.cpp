@@ -1,3 +1,4 @@
+#pragma once
 #include <map>
 #include <iostream>
 #include "SimpleScript.h"
@@ -77,7 +78,7 @@ bool line::push(std::string x){
 		argv[0] = trunc[i];argv[1] = "0";
 		func = "add";
 		return true;
-	}else if (isFunc(trunc[i]) || isMod(trunc[i])) {
+	}else if (isFunc(trunc[i]) || cur.isModel(trunc[i])) {
 		func = trunc[i];
 		while (++i <= pts){
 			argv[++argc] = trunc[i];
@@ -100,7 +101,7 @@ std::string line::exec(){
 		else if (ag[i][0] == '&')
 			ag[i] = ag[i].substr(1,ag[i].length()-1);	
 		else if (isCal(ag[i])) {
-				ag[i] = calext(ag[i]);
+				ag[i] = CalculationExtend(ag[i]);
 				ag[i] = execl(ag[i]);
 		}else if (isNum(ag[i])){
 			//std::cout<<ag[i]<<" is a number"<<std::endl;
@@ -120,7 +121,7 @@ std::string line::exec(){
 		for (int i=0;i<=argc;i++)
 			ag0[i+1] = ag[i];
 			
-		ret = mExe(ag0);
+		ret = cur.ModelExecute(ag0);
 	}
 	
 	if (isRet(to_str)) variMove(va,ret);
