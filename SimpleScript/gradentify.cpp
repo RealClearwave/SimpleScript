@@ -6,15 +6,24 @@ std::string id2str[maxfunc] = {
 	"print","println","delay","isvari","decv","add","input",
 	"comp","if","goto","endl","rand","sub","mul",
 	"div","popback","exit","decl","call","for","import",
-	"_sys","return"
+	"_sys","return","else","<end>"
 };
 std::map <std::string,int> gramp;
 
+char trset[_maxtr]{
+	' ','	',',','(',')',
+	'=','{','\0'
+};
+std::map<char,bool> trs;
+	
 void graInit(){
 	int i = -1;
-	while (id2str[++i] != ""){
+	while (id2str[++i] != "<end>"){
 		gramp[id2str[i]] = i;
 	}
+	
+	for (int i=0;trset[i];i++)
+		trs[trset[i]] = true;
 }
 
 bool isFunc(std::string x){
@@ -24,7 +33,7 @@ bool isFunc(std::string x){
 bool isNum(std::string x){
 	if (x.length() == 0) return false;
 	for (int i=0;i<x.length();i++)
-		if (x[i] != '[' && x[i] != ']' && (x[i]<'0' || x[i] > '9')) return false;
+		if (x[i]<'0' || x[i] > '9') return false;
 	
 	return true;
 }
@@ -37,102 +46,93 @@ int isCal(std::string x){
 	return false;
 } 
 
-std::string graDentify(std::string x){ 
-	if (x[0] == '\"' && x[x.length()-1] == '\"') 
-		return x.substr(1,x.length()-2);
+bool isRet(std::string &x){
+	int lf = x.find('(');
+	int eq = x.find('=');
+	int ek = x.find("==");
+	if (eq == ek) return false;
+	if (eq == -1) return false;
+	if (lf != -1 && lf < eq) return false;
+	
+	x[eq] = ' ';
+	return true;
+}
+
+bool line::push(std::string x){
+	to_str = SpaceErase(x);
+	int i = 0,last = 0;pts = -1;argc = -1;
+	
+	while (i < x.length() && trs.find(x[i]) != trs.end()) last++,i++;
+	while (i < x.length()){
+		while (i < x.length() && trs.find(x[i]) == trs.end()) i++;
+		trunc[++pts] = x.substr(last,i-last);
+		if (i >= x.length()) break;
+		while (i < x.length() && trs.find(x[i]) != trs.end()) i++;
+		last = i;
+	}
+
+	i = 0;if (isRet(x)) va = trunc[i++];
+	if (isNum(trunc[i]) || isVari(trunc[i])){
+		argc = 1;
+		argv[0] = trunc[i];argv[1] = "0";
+		func = "add";
+		return true;
+	}else if (isFunc(trunc[i]) || isMod(trunc[i])) {
+		func = trunc[i];
+		while (++i <= pts){
+			argv[++argc] = trunc[i];
+		}
+		return true;
+	}else
+		return false;
 		
-	x = stylize(x);
-	//std::cout<<x<<std::endl;
-	if (x.length() == 0) return "0";
-	if (x[0] == '#') return "Remarked";
-	if (x.find(";") == -1 && x.find("=") == -1){
-		//std::cout<<x<<' '<<isVari(x)<<std::endl;
-		if (x[0] == '&') return x.substr(1,x.length()-1);
-		else if (isVari(x)) return std::to_string(variFetch(x));
-		else if (isCal(x)) return calext(x);
-		else if (x.find("(") != -1) x += ";";
-		else return x;
-	}
+	return true;
+}
 	
-	std::string v,c,a,tmp;
-	bool isret = false; 
-	int cma = x.find(";"),ef = -1;
-	if (cma == -1) {
-		isret = true;
-		while (ef == -1){
-			ef = x.find("="); if (ef == -1) break;
-			int c1 = c.find(0,ef,'\"'),c2 = c.find(ef+1,'\"');
-			if (c1 != -1 && c2 != -2) ef = -1;
-		}
-		
-		v = x.substr(0,ef);
-		if (!isVari(v)) variPush(v,0);
-		
-	}else{
-		ef = -1;
-	}
-	
-	tmp = x.substr(ef+1);
-	int lf = tmp.find("(");
-	
-	if (lf == -1 && ef != -1){
-		a = tmp;
-		if (isVari(a)){
-			variMove(v,variFetch(a));
-			return a;
-		}
-		if (isNum(a)){
-			//std::cout<<a<<std::endl;
-			variMove(v,std::stoi(a));
-			return a;
-		}
-	}
-	
-	c = tmp.substr(0,lf);
-	a = tmp.substr(lf+1);
-	if (a[a.length()-1] == ';') a = a.substr(0,a.length()-1);
-	if (a[a.length()-1] == ')') a = a.substr(0,a.length()-1);
-	
-	//std::cout<<v<<'_'<<c<<'_'<<a<<std::endl;
-	//std::cout<<std::endl;
-	
-	int last = 0,argc = 0;
-	std::string argv[maxarg];
-	for (int i=0;i<a.length();i++){
-		if (a[i] == '(') while (a[i] != ')') i++;
-		//if (a[i] == '"') {last++;i++;while (a[i] != '"') i++;a[i] = '\0';}
-		if (a[i] == ','){
-			argv[argc++] = a.substr(last,i-last);
-			last = i+1;
-		}
-	}
-	
-	argv[argc] = a.substr(last);
+std::string line::exec(){
+	//std::cout<<to_str<<std::endl; 
+	std::string ag[_maxtr];
+	for (int i=0;i<=argc;i++) ag[i] = argv[i];
 	
 	for (int i=0;i<=argc;i++){
-		argv[i] = graDentify(argv[i]);
-		//std::cout<<argv[i]<<' ';
-	} 
-	
-	//int cid = gramp[c];
-	int ret = -2147;//std::cout<<c<<std::endl;
-	if (isFunc(c)){
-		//std::cout<<gramp[c]<<std::endl;
-		ret = execPro(gramp[c],argv); 
-	}else{
-		std::string ag[maxarg];
-		ag[0] = c;//std::cout<<argc<<std::endl;
-		for (int k=1;k<=argc+1;k++)
-			ag[k] = argv[k-1];
-		
-		//std::cout<<ag[0]<<' '<<ag[1]<<' '<<ag[2]<<std::endl;
-		ret = mExe(ag);
+		if (ag[i][0] == '"')
+			ag[i] = ag[i].substr(1,ag[i].length()-2);
+		else if (ag[i][0] == '&')
+			ag[i] = ag[i].substr(1,ag[i].length()-1);	
+		else if (isCal(ag[i])) {
+				ag[i] = calext(ag[i]);
+				ag[i] = execl(ag[i]);
+		}else if (isNum(ag[i])){
+			//std::cout<<ag[i]<<" is a number"<<std::endl;
+		}else if (isVari(ag[i])){
+				ag[i] = std::to_string(variFetch(ag[i]));
+		}else if (exeable(ag[i]))
+			ag[i] = execl(ag[i]);
+			
 	}
 	
-	if (isret){
-		variMove(v,ret);
+	int ret;
+	if (isFunc(func))
+		ret = execPro(gramp[func],ag);
+	else{
+		std::string ag0[maxarg];
+		ag0[0] = func;
+		for (int i=0;i<=argc;i++)
+			ag0[i+1] = ag[i];
+			
+		ret = mExe(ag0);
 	}
 	
-	//std::cout<<v<<' '<<ret<<std::endl;
+	if (isRet(to_str)) variMove(va,ret);
 	return std::to_string(ret);
+}	
+
+bool exeable(std::string x){
+	line tmp;
+	return tmp.push(x);
 }
+std::string execl(std::string x){
+	line tmp;
+	tmp.push(x);
+	return tmp.exec();
+}	

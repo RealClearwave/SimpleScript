@@ -1,79 +1,87 @@
 #include "SimpleScript.h"
 #include <string>
+#include <vector>
 #include <fstream>
 #include <iostream>
 #include <map>
-#define max_lines 10001
+#define max_lines 10001 // Being Reduced.
 #define max_mods 301
  
 struct File{
-	std::string ln[max_lines];
-	int esp,size;
+	std::vector<line> ln;
+	int esp;
 	int rtl[max_lines],rtc;
 	std::map<std::string,int> fun2ln;
 }cur; 
 
-void fLoad(std::string fn){
-	cur.esp = 0;cur.rtc = 0;cur.size = 0;
-	cur.rtl[++cur.rtc] = 0;
-	std::string tmp;
-	std::ifstream fin(fn.c_str());
-	while (getline(fin,tmp))
-		cur.ln[++cur.size] = tmp;
-	
-	cur.ln[++cur.size] = "exit();";
-	fin.close();
+void fTrunc(std::string x){
+	int pos,last = 0;
+	while ((pos = x.find(';',last)) != -1){
+		cur.ln.push_back(line());
+		cur.ln.back().push(x.substr(last,pos-last));
+		last = pos+1;
+	}
 }
 
+std::string fLoad(std::string fn){
+	cur.esp = -1;cur.rtc = 0;
+	cur.rtl[++cur.rtc] = 0;
+	std::string tmp,ret;
+	std::ifstream fin(fn.c_str());
+	while (getline(fin,tmp)){
+		ret += tmp;
+		if (ret[ret.length()-1] != ';') ret += ';';
+	}
+
+	ret += "exit();";
+	fin.close();
+	return ret;
+}
+
+bool fAddesp(){
+	cur.esp++;
+}
 bool fNext(){
-	if (++cur.esp > cur.size) return false;
-	//std::cout<<cur.esp<<' '<<cur.ln[cur.esp]<<std::endl;
-	graDentify(cur.ln[cur.esp]);
+	if (++cur.esp > cur.ln.size()) return false;
+	cur.ln[cur.esp].exec();
 	return true;
 }
 
 void fJump(int e){
 	cur.rtl[++cur.rtc] = cur.esp;
 	cur.esp = e-1;
-	//std::cout<<"Jumped to Esp "<<cur.esp+1<<std::endl;
 }
 
 void fRet(){
 	cur.esp = cur.rtl[cur.rtc];
 	cur.rtc--;
-	//std::cout<<"Return back with esp:"<<cur.esp<<std::endl;
 }
 
 void fExe(std::string fn){
-	fLoad(fn);
+	fTrunc(fLoad(fn));
 	while (fNext());
 	return;
 }
 
 void fign(std::string fn){
-	while (cur.ln[cur.esp] != fn) cur.esp++;
-	//std::cout<<"fign to esp:"<<cur.esp<<std::endl;
+	while (cur.ln[++cur.esp].str() != fn);
+		//std::cout<<"[Ignore]"<<cur.ln[cur.esp].str()<<std::endl;
 }
 
 void fExeuntil(std::string flg){
-	//std::cout<<"Entered f with "<<cur.ln[cur.esp]<<std::endl;
 	int te = cur.esp;cur.esp++;
-	while (cur.ln[cur.esp] != flg){
-		//std::cout<<cur.ln[cur.esp]<<std::endl;
-		graDentify(cur.ln[cur.esp]);
-		
-		if (cur.ln[cur.esp].find("return") != -1)
-			break;
-		
+	while (cur.ln[cur.esp].str() != flg){
+		//std::cout<<cur.ln[cur.esp].str()<<','<<flg<<std::endl;
+		cur.ln[cur.esp].exec();
+		if (cur.ln[cur.esp].str().find("return") != -1) break;
 		
 		cur.esp++;
 	}
 	
-	//std::cout<<"Loop back at "<<te<<std::endl;
+	//std::cout<<"[finished]"<<std::endl;
 	cur.esp = te;
 }
 void mDec(std::string ms){
-	//std::cout<<"Current Esp is :"<<cur.esp<<std::endl;
 	cur.fun2ln[ms] =cur.esp;
 	fign("}");
 }
@@ -81,37 +89,35 @@ void mDec(std::string ms){
 int  mExe(std::string argv[]){
 	int ln = cur.fun2ln[argv[0]],i = 0;
 	while (argv[++i] != ""){
-		//std::cout<<argv[i]<<' '<<i<<std::endl;
 		std::string tmp = argv[0] + "_" + std::to_string(i) + "_";
-		//std::cout<<tmp<<" Created."<<std::endl;
 		if (!isVari(tmp)) variPush(tmp,std::stoi(argv[i])); else variMove(tmp,std::stoi(argv[i]));
 	}
 	
 	i--;
 	std::string tmp = argv[0] + "argc";
-	//std::cout<<tmp<<' '<<i<<std::endl;
 	if (!isVari(tmp)) variPush(tmp,i); else variMove(tmp,i);
 	
 	int te = cur.esp;
 	cur.esp = ln;fExeuntil("}");
-	//std::cout<<"G:"<<variFetch("retv")<<std::endl;
 	cur.esp = te;
 	return variFetch("retv");
 }
 
+bool isMod(std::string x){
+	return (cur.fun2ln.find(x) != cur.fun2ln.end());
+}
 void ldmod(std::string fn){
-	fn += ".fmd";//std::cout<<fn<<std::endl;
+	fn += ".fmd";
 	std::ifstream fin(fn.c_str());
 	std::string tmp;
 	
 	while (getline(fin,tmp)){
-		cur.ln[++cur.size] = stylize(tmp);
-		std::string t = cur.ln[cur.size];
+		cur.ln.back().push(tmp);
+		std::string t = cur.ln.back().str();
 		if (t.find("decl") != -1){
 			int p0 = t.find("("),p1 = t.find(")");
 			std::string k = t.substr(p0+1,p1-p0-1);
-			//std::cout<<k<<' '<<cur.size+1<<std::endl;
-			cur.fun2ln[k] = cur.size;
+			cur.fun2ln[k] = cur.ln.size();
 		}
 	}
 	
