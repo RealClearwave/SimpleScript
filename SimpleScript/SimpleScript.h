@@ -29,18 +29,20 @@ struct line{
 };
 
 //Variable
-void variPush(std::string x,int org = 0);
-void variClear(std::string x);
-void variMove(std::string x,int mv);
-int variFetch(std::string x);
-void variAdd(std::string x,std::string a);
-void variMul(std::string x,std::string a);
-void variDiv(std::string x,std::string a);
-bool isVari(std::string x);
-#define LESS 0
-#define EQUAL 1
-#define GREATER 2
-int variCmp(std::string x,std::string y);
+struct Variable{
+	#define LESS 0
+	#define EQUAL 1
+	#define GREATER 2
+	static int Cmp(std::string x,std::string y);
+	static void Push(std::string x,int org = 0);
+	static void Clear(std::string x);
+	static void Move(std::string x,int mv);
+	static int Fetch(std::string x);
+	static bool isVari(std::string x);
+	static std::string arrext(std::string x);
+};
+
+
 
 //Files
 struct File{
@@ -63,10 +65,10 @@ struct File{
 	void ExecuteScriptuntil(std::string flg);
 	void LoadModule(std::string fn);
 	bool isModel(std::string x);
-	bool SkipCurrentLine();
+	bool SkipCurrentScriptrentLine();
 };
 
-extern File cur; 
+extern File CurrentScript; 
 
 //Stylize
 std::string SpaceErase(std::string line);

@@ -6,15 +6,15 @@
 void File::TruncFile(std::string x){
 	int pos,last = 0;
 	while ((pos = x.find(';',last)) != -1){
-		cur.ln.push_back(line());
-		cur.ln.back().push(x.substr(last,pos-last));
+		CurrentScript.ln.push_back(line());
+		CurrentScript.ln.back().push(x.substr(last,pos-last));
 		last = pos+1;
 	}
 }
 
 std::string File::LoadFile(std::string fn){
-	cur.esp = -1;cur.rtc = 0;
-	cur.rtl[++cur.rtc] = 0;
+	CurrentScript.esp = -1;CurrentScript.rtc = 0;
+	CurrentScript.rtl[++CurrentScript.rtc] = 0;
 	std::string tmp,ret;
 	std::ifstream fin(fn.c_str());
 	while (getline(fin,tmp)){
@@ -27,23 +27,23 @@ std::string File::LoadFile(std::string fn){
 	return ret;
 }
 
-bool File::SkipCurrentLine(){
-	cur.esp++;
+bool File::SkipCurrentScriptrentLine(){
+	CurrentScript.esp++;
 }
 bool File::ExecuteNextLine(){
-	if (++cur.esp > cur.ln.size()) return false;
-	cur.ln[cur.esp].exec();
+	if (++CurrentScript.esp > CurrentScript.ln.size()) return false;
+	CurrentScript.ln[CurrentScript.esp].exec();
 	return true;
 }
 
 void File::JumpToLine(int e){
-	cur.rtl[++cur.rtc] = cur.esp;
-	cur.esp = e-1;
+	CurrentScript.rtl[++CurrentScript.rtc] = CurrentScript.esp;
+	CurrentScript.esp = e-1;
 }
 
 void File::DeclReturn(){
-	cur.esp = cur.rtl[cur.rtc];
-	cur.rtc--;
+	CurrentScript.esp = CurrentScript.rtl[CurrentScript.rtc];
+	CurrentScript.rtc--;
 }
 
 void File::ExecuteScript(std::string fn){
@@ -53,47 +53,48 @@ void File::ExecuteScript(std::string fn){
 }
 
 void File::IgnoreUntil(std::string fn){
-	while (cur.ln[++cur.esp].str() != fn);
-		//std::cout<<"[Ignore]"<<cur.ln[cur.esp].str()<<std::endl;
+	while (CurrentScript.ln[++CurrentScript.esp].str() != fn);
+		//std::cout<<"[Ignore]"<<CurrentScript.ln[CurrentScript.esp].str()<<std::endl;
 }
 
 void File::ExecuteScriptuntil(std::string flg){
-	int te = cur.esp;cur.esp++;
-	while (cur.ln[cur.esp].str() != flg){
-		//std::cout<<cur.ln[cur.esp].str()<<','<<flg<<std::endl;
-		cur.ln[cur.esp].exec();
-		if (cur.ln[cur.esp].str().find("return") != -1) break;
+	int te = CurrentScript.esp;CurrentScript.esp++;
+	while (CurrentScript.ln[CurrentScript.esp].str() != flg){
+		//std::cout<<CurrentScript.ln[CurrentScript.esp].str()<<','<<flg<<std::endl;
+		CurrentScript.ln[CurrentScript.esp].exec();
+		if (CurrentScript.ln[CurrentScript.esp].str().find("return") != -1) break;
 		
-		cur.esp++;
+		CurrentScript.esp++;
 	}
 	
 	//std::cout<<"[finished]"<<std::endl;
-	cur.esp = te;
+	CurrentScript.esp = te;
 }
 void File::ModelDecode(std::string ms){
-	cur.fun2ln[ms] =cur.esp;
+	CurrentScript.fun2ln[ms] =CurrentScript.esp;
 	IgnoreUntil("}");
 }
 
 int  File::ModelExecute(std::string argv[]){
-	int ln = cur.fun2ln[argv[0]],i = 0;
+	int ln = CurrentScript.fun2ln[argv[0]],i = 0;
 	while (argv[++i] != ""){
 		std::string tmp = argv[0] + "_" + std::to_string(i) + "_";
-		if (!isVari(tmp)) variPush(tmp,std::stoi(argv[i])); else variMove(tmp,std::stoi(argv[i]));
+		if (!Variable::isVari(tmp)) Variable::Push(tmp,std::stoi(argv[i]));
+		else Variable::Move(tmp,std::stoi(argv[i]));
 	}
 	
 	i--;
 	std::string tmp = argv[0] + "argc";
-	if (!isVari(tmp)) variPush(tmp,i); else variMove(tmp,i);
+	if (!Variable::isVari(tmp)) Variable::Push(tmp,i); else Variable::Move(tmp,i);
 	
-	int te = cur.esp;
-	cur.esp = ln;ExecuteScriptuntil("}");
-	cur.esp = te;
-	return variFetch("retv");
+	int te = CurrentScript.esp;
+	CurrentScript.esp = ln;ExecuteScriptuntil("}");
+	CurrentScript.esp = te;
+	return Variable::Fetch("retv");
 }
 
 bool File::isModel(std::string x){
-	return (cur.fun2ln.find(x) != cur.fun2ln.end());
+	return (CurrentScript.fun2ln.find(x) != CurrentScript.fun2ln.end());
 }
 void File::LoadModule(std::string fn){
 	fn += ".fmd";
@@ -101,12 +102,12 @@ void File::LoadModule(std::string fn){
 	std::string tmp;
 	
 	while (getline(fin,tmp)){
-		cur.ln.back().push(tmp);
-		std::string t = cur.ln.back().str();
+		CurrentScript.ln.back().push(tmp);
+		std::string t = CurrentScript.ln.back().str();
 		if (t.find("decl") != -1){
 			int p0 = t.find("("),p1 = t.find(")");
 			std::string k = t.substr(p0+1,p1-p0-1);
-			cur.fun2ln[k] = cur.ln.size();
+			CurrentScript.fun2ln[k] = CurrentScript.ln.size();
 		}
 	}
 	

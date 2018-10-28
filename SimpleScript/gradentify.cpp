@@ -73,12 +73,12 @@ bool line::push(std::string x){
 	}
 
 	i = 0;if (isRet(x)) va = trunc[i++];
-	if (isNum(trunc[i]) || isVari(trunc[i])){
+	if (isNum(trunc[i]) || Variable::isVari(trunc[i])){
 		argc = 1;
 		argv[0] = trunc[i];argv[1] = "0";
 		func = "add";
 		return true;
-	}else if (isFunc(trunc[i]) || cur.isModel(trunc[i])) {
+	}else if (isFunc(trunc[i]) || CurrentScript.isModel(trunc[i])) {
 		func = trunc[i];
 		while (++i <= pts){
 			argv[++argc] = trunc[i];
@@ -105,8 +105,8 @@ std::string line::exec(){
 				ag[i] = execl(ag[i]);
 		}else if (isNum(ag[i])){
 			//std::cout<<ag[i]<<" is a number"<<std::endl;
-		}else if (isVari(ag[i])){
-				ag[i] = std::to_string(variFetch(ag[i]));
+		}else if (Variable::isVari(ag[i])){
+				ag[i] = std::to_string(Variable::Fetch(ag[i]));
 		}else if (exeable(ag[i]))
 			ag[i] = execl(ag[i]);
 			
@@ -121,10 +121,10 @@ std::string line::exec(){
 		for (int i=0;i<=argc;i++)
 			ag0[i+1] = ag[i];
 			
-		ret = cur.ModelExecute(ag0);
+		ret = CurrentScript.ModelExecute(ag0);
 	}
 	
-	if (isRet(to_str)) variMove(va,ret);
+	if (isRet(to_str)) Variable::Move(va,ret);
 	return std::to_string(ret);
 }	
 

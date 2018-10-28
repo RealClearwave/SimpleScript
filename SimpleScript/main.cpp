@@ -3,10 +3,10 @@
 #include <string>
 #include "SimpleScript.h"
 
-File cur;
+File CurrentScript;
 
 int main(int argc,char* argv[]) {
 	graInit();
-	cur.ExecuteScript(argv[1]);
+	CurrentScript.ExecuteScript(argv[1]);
 	return 0;
 }

@@ -5,19 +5,19 @@
 #define SIMPLESCRIPT_PRIVATE_H
 
 /* VERSION DEFINITIONS */
-#define VER_STRING	"2.0.6.986"
+#define VER_STRING	"2.0.6.1008"
 #define VER_MAJOR	2
 #define VER_MINOR	0
 #define VER_RELEASE	6
-#define VER_BUILD	986
+#define VER_BUILD	1008
 #define COMPANY_NAME	""
-#define FILE_VERSION	"2.0.6.986"
+#define FILE_VERSION	"2.0.6.1008"
 #define FILE_DESCRIPTION	"An Light Script Emulator"
 #define INTERNAL_NAME	""
 #define LEGAL_COPYRIGHT	""
 #define LEGAL_TRADEMARKS	""
 #define ORIGINAL_FILENAME	""
 #define PRODUCT_NAME	"SimpleScript"
-#define PRODUCT_VERSION	"2.0.6.986"
+#define PRODUCT_VERSION	"2.0.6.1008"
 
 #endif /*SIMPLESCRIPT_PRIVATE_H*/
