@@ -167,15 +167,7 @@ int cinVari(std::string argv[]){
 } 
 
 int comp(std::string argv[]){
-	int a,b;
-	if (Variable::isVari(argv[1])) a = Variable::Fetch(argv[1]); else a = std::stoi(argv[1]);
-	if (Variable::isVari(argv[2])) b = Variable::Fetch(argv[2]); else b = std::stoi(argv[2]);
-	
-	if (argv[0] == "=" && a == b) return true;
-	if (argv[0] == "<" && a < b) return true;
-	if (argv[0] == ">" && a > b) return true;
-	
-	return false;
+	return Compare(argv[1] + argv[0] + argv[2]);
 } 
 
 int if_sel(std::string argv[]){
@@ -240,21 +232,8 @@ int exefunc(std::string argv[]){
 }
 
 int crepeat(std::string argv[]){ 
-	std::string var = argv[0];
-	int start,end;
-	if (Variable::isVari(argv[1])) start = Variable::Fetch(argv[1]); else start = std::stoi(argv[1]);
-	if (Variable::isVari(argv[2])) end   = Variable::Fetch(argv[2]); else end   = std::stoi(argv[2]);
-	
-	if (!Variable::isVari(var)) Variable::Push(var,start); else Variable::Move(var,start);	
-	
-	while (Variable::Fetch(var) <= end){
-		File::ExecuteScriptuntil("}");
-		Variable::Move(var,Variable::Fetch(var)+1);
-	}
-	
-	File::IgnoreUntil("}");
-	Variable::Clear(var);
-	return end - start + 1;
+	File::ForLoop(argv[0],argv[1],argv[2]);
+	return 0;
 }
 
 int mimp(std::string argv[]){
