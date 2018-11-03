@@ -1,20 +1,24 @@
-#pragma once
 #include "SimpleScript.h"
 #include <string>
 #include <fstream>
 
+std::vector<line> ln;
+int esp;
+int rtl[max_lines],rtc;
+std::map<std::string,int> fun2ln;
+	
 void File::TruncFile(std::string x){
 	int pos,last = 0;
 	while ((pos = x.find(';',last)) != -1){
-		CurrentScript.ln.push_back(line());
-		CurrentScript.ln.back().push(x.substr(last,pos-last));
+		ln.push_back(line());
+		ln.back().push(x.substr(last,pos-last));
 		last = pos+1;
 	}
 }
 
 std::string File::LoadFile(std::string fn){
-	CurrentScript.esp = -1;CurrentScript.rtc = 0;
-	CurrentScript.rtl[++CurrentScript.rtc] = 0;
+	esp = -1;rtc = 0;
+	rtl[++rtc] = 0;
 	std::string tmp,ret;
 	std::ifstream fin(fn.c_str());
 	while (getline(fin,tmp)){
@@ -27,23 +31,23 @@ std::string File::LoadFile(std::string fn){
 	return ret;
 }
 
-bool File::SkipCurrentScriptrentLine(){
-	CurrentScript.esp++;
+bool File::SkipCurrentScriptLine(){
+	esp++;
 }
 bool File::ExecuteNextLine(){
-	if (++CurrentScript.esp > CurrentScript.ln.size()) return false;
-	CurrentScript.ln[CurrentScript.esp].exec();
+	if (++esp > ln.size()) return false;
+	ln[esp].exec();
 	return true;
 }
 
 void File::JumpToLine(int e){
-	CurrentScript.rtl[++CurrentScript.rtc] = CurrentScript.esp;
-	CurrentScript.esp = e-1;
+	rtl[++rtc] = esp;
+	esp = e-1;
 }
 
 void File::DeclReturn(){
-	CurrentScript.esp = CurrentScript.rtl[CurrentScript.rtc];
-	CurrentScript.rtc--;
+	esp = rtl[rtc];
+	rtc--;
 }
 
 void File::ExecuteScript(std::string fn){
@@ -53,30 +57,30 @@ void File::ExecuteScript(std::string fn){
 }
 
 void File::IgnoreUntil(std::string fn){
-	while (CurrentScript.ln[++CurrentScript.esp].str() != fn);
-		//std::cout<<"[Ignore]"<<CurrentScript.ln[CurrentScript.esp].str()<<std::endl;
+	while (ln[++esp].str() != fn);
+		//std::cout<<"[Ignore]"<<ln[esp].str()<<std::endl;
 }
 
 void File::ExecuteScriptuntil(std::string flg){
-	int te = CurrentScript.esp;CurrentScript.esp++;
-	while (CurrentScript.ln[CurrentScript.esp].str() != flg){
-		//std::cout<<CurrentScript.ln[CurrentScript.esp].str()<<','<<flg<<std::endl;
-		CurrentScript.ln[CurrentScript.esp].exec();
-		if (CurrentScript.ln[CurrentScript.esp].str().find("return") != -1) break;
+	int te = esp;esp++;
+	while (ln[esp].str() != flg){
+		//std::cout<<ln[esp].str()<<','<<flg<<std::endl;
+		ln[esp].exec();
+		if (ln[esp].str().find("return") != -1) break;
 		
-		CurrentScript.esp++;
+		esp++;
 	}
 	
 	//std::cout<<"[finished]"<<std::endl;
-	CurrentScript.esp = te;
+	esp = te;
 }
 void File::ModelDecode(std::string ms){
-	CurrentScript.fun2ln[ms] =CurrentScript.esp;
+	fun2ln[ms] =esp;
 	IgnoreUntil("}");
 }
 
 int  File::ModelExecute(std::string argv[]){
-	int ln = CurrentScript.fun2ln[argv[0]],i = 0;
+	int ln = fun2ln[argv[0]],i = 0;
 	while (argv[++i] != ""){
 		std::string tmp = argv[0] + "_" + std::to_string(i) + "_";
 		if (!Variable::isVari(tmp)) Variable::Push(tmp,std::stoi(argv[i]));
@@ -87,14 +91,14 @@ int  File::ModelExecute(std::string argv[]){
 	std::string tmp = argv[0] + "argc";
 	if (!Variable::isVari(tmp)) Variable::Push(tmp,i); else Variable::Move(tmp,i);
 	
-	int te = CurrentScript.esp;
-	CurrentScript.esp = ln;ExecuteScriptuntil("}");
-	CurrentScript.esp = te;
+	int te = esp;
+	esp = ln;ExecuteScriptuntil("}");
+	esp = te;
 	return Variable::Fetch("retv");
 }
 
 bool File::isModel(std::string x){
-	return (CurrentScript.fun2ln.find(x) != CurrentScript.fun2ln.end());
+	return (fun2ln.find(x) != fun2ln.end());
 }
 void File::LoadModule(std::string fn){
 	fn += ".fmd";
@@ -102,12 +106,12 @@ void File::LoadModule(std::string fn){
 	std::string tmp;
 	
 	while (getline(fin,tmp)){
-		CurrentScript.ln.back().push(tmp);
-		std::string t = CurrentScript.ln.back().str();
+		ln.back().push(tmp);
+		std::string t = ln.back().str();
 		if (t.find("decl") != -1){
 			int p0 = t.find("("),p1 = t.find(")");
 			std::string k = t.substr(p0+1,p1-p0-1);
-			CurrentScript.fun2ln[k] = CurrentScript.ln.size();
+			fun2ln[k] = ln.size();
 		}
 	}
 	

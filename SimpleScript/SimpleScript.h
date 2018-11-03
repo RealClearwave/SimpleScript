@@ -48,27 +48,21 @@ struct Variable{
 struct File{
 	#define max_lines 10001 // Being Reduced.
 	#define max_mods 301
-	std::vector<line> ln;
-	int esp;
-	int rtl[max_lines],rtc;
-	std::map<std::string,int> fun2ln;
 	
-	void TruncFile(std::string x); 
-	std::string LoadFile(std::string fn);
-	bool ExecuteNextLine();
-	void JumpToLine(int e);
-	void ExecuteScript(std::string fn);
-	void DeclReturn();
-	int  ModelExecute(std::string argv[]);
-	void ModelDecode(std::string ms);
-	void IgnoreUntil(std::string fn);
-	void ExecuteScriptuntil(std::string flg);
-	void LoadModule(std::string fn);
-	bool isModel(std::string x);
-	bool SkipCurrentScriptrentLine();
+	static void TruncFile(std::string x); 
+	static std::string LoadFile(std::string fn);
+	static bool ExecuteNextLine();
+	static void JumpToLine(int e);
+	static void ExecuteScript(std::string fn);
+	static void DeclReturn();
+	static int  ModelExecute(std::string argv[]);
+	static void ModelDecode(std::string ms);
+	static void IgnoreUntil(std::string fn);
+	static void ExecuteScriptuntil(std::string flg);
+	static void LoadModule(std::string fn);
+	static bool isModel(std::string x);
+	static bool SkipCurrentScriptLine();
 };
-
-extern File CurrentScript; 
 
 //Stylize
 std::string SpaceErase(std::string line);

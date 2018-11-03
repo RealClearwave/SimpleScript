@@ -1,4 +1,3 @@
-#pragma once
 #include "SimpleScript.h"
 #include <iostream>
 #include <stdarg.h>
@@ -197,14 +196,14 @@ int if_sel(std::string argv[]){
 //	std::cout<<comp(rgv)<<std::endl;
 	
 	if (comp(rgv)){
-		CurrentScript.ExecuteScriptuntil("}");
-		CurrentScript.IgnoreUntil("else");
-		CurrentScript.IgnoreUntil("}");
+		File::ExecuteScriptuntil("}");
+		File::IgnoreUntil("else");
+		File::IgnoreUntil("}");
 		workd = true;
 	}else{//std::cout<<"Gugu"<<std::endl; 
-		CurrentScript.IgnoreUntil("else");
-		CurrentScript.ExecuteScriptuntil("}");
-		CurrentScript.IgnoreUntil("}");
+		File::IgnoreUntil("else");
+		File::ExecuteScriptuntil("}");
+		File::IgnoreUntil("}");
 	}
 	
 	return (int)(workd);
@@ -215,7 +214,7 @@ int els(std::string argv[]){
 }
 int go_to(std::string argv[]) {
 	int line = std::stoi(argv[0]);
-	CurrentScript.JumpToLine(line);
+	File::JumpToLine(line);
 	return line;
 }
 
@@ -224,7 +223,7 @@ int crnd(std::string argv[]){
 }
 
 int cret(std::string argv[]){
-	CurrentScript.DeclReturn();
+	File::DeclReturn();
 	return 0;
 }
 
@@ -233,11 +232,11 @@ int quit(std::string argv[]){
 }
 
 int decfunc(std::string argv[]){
-	CurrentScript.ModelDecode(argv[0]);
+	File::ModelDecode(argv[0]);
 }
 
 int exefunc(std::string argv[]){
-	return CurrentScript.ModelExecute(argv);
+	return File::ModelExecute(argv);
 }
 
 int crepeat(std::string argv[]){ 
@@ -249,17 +248,17 @@ int crepeat(std::string argv[]){
 	if (!Variable::isVari(var)) Variable::Push(var,start); else Variable::Move(var,start);	
 	
 	while (Variable::Fetch(var) <= end){
-		CurrentScript.ExecuteScriptuntil("}");
+		File::ExecuteScriptuntil("}");
 		Variable::Move(var,Variable::Fetch(var)+1);
 	}
 	
-	CurrentScript.IgnoreUntil("}");
+	File::IgnoreUntil("}");
 	Variable::Clear(var);
 	return end - start + 1;
 }
 
 int mimp(std::string argv[]){
-	CurrentScript.LoadModule(argv[0]);
+	File::LoadModule(argv[0]);
 	return 0;
 }
 
