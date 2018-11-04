@@ -58,7 +58,7 @@ void File::ExecuteScript(std::string fn){
 }
 
 void File::IgnoreUntil(std::string fn){
-	while (!ln[esp].contain(fn));
+	while (!ln[++esp].contain(fn));
 		//std::cout<<"[Ignore]"<<ln[esp].str()<<std::endl;
 }
 
@@ -73,7 +73,7 @@ void File::ExecuteScriptuntil(std::string flg){
 	}
 	
 	//std::cout<<"[finished]"<<std::endl;
-	esp = te+1;
+	esp = te;
 }
 void File::ModelDecode(std::string ms){
 	fun2ln[ms] =esp;
@@ -121,11 +121,15 @@ void File::LoadModule(std::string fn){
 } 
 
 void File::ForLoop(std::string ini,std::string enf,std::string ite){
-	execl(ini);
 	//std::cout<<ini<<' '<<enf<<' '<<ite<<std::endl;
+	execl(ini);
+	//std::cout<<Compare("4<11")<<std::endl;
 	while (Compare(enf)){
+		//std::cout<<"#"<<enf<<' '<<Variable::Fetch("i")<<"#"<<std::endl;
 		ExecuteScriptuntil("}");
-		std::cout<<"Gugu"<<std::endl;
 		execl(ite);
 	}
+	
+	IgnoreUntil("}");
+	//SkipCurrentScriptLine();
 }

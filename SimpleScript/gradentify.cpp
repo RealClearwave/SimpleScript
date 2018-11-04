@@ -49,6 +49,11 @@ int isCal(std::string x){
 bool isRet(std::string &x){
 	int lf = x.find('(');
 	int eq = x.find('=');
+	if (lf == -1 && eq != -1){
+		x[eq] = ' ';
+		return true;
+	}
+	
 	if (eq == -1 || lf < eq) return false;
 	
 	x[eq] = ' ';
@@ -58,23 +63,62 @@ bool isRet(std::string &x){
 bool line::contain(std::string x){
 	return (func == x);
 }
+
 bool line::push(std::string x){
-	to_str = SpaceErase(x);
-	isret = isRet(x);
+	x = SpaceErase(x);
+	to_str = x;isret = isRet(x);
 	int i = 0,last = 0;pts = -1;argc = -1;
 	
 	while (i < x.length() && trs.find(x[i]) != trs.end()) last++,i++;
 	while (i < x.length()){
-		while (i < x.length() && trs.find(x[i]) == trs.end()) i++;
-		trunc[++pts] = x.substr(last,i-last);
+		if (x[i] == '\"'){
+			pts++;
+			while (x[++i] != '\"') trunc[pts] += x[i];
+			trunc[pts] = '\"' + trunc[pts] + x[i++];
+			//std::cout<<"HA"<<trunc[pts]<<"HB"<<std::endl;
+			last = i;
+		}else {
+			while (i < x.length() && trs.find(x[i]) == trs.end()) i++;
+			trunc[++pts] = x.substr(last,i-last);
+		}
+		
 		if (i >= x.length()) break;
 		while (i < x.length() && trs.find(x[i]) != trs.end()) i++;
 		last = i;
 	}
 
+	//for (int i=0;i<=pts;i++) std::cout<<trunc[i]<<' ';
+	//std::cout<<std::endl;
+	
 	i = 0;if (isret) va = trunc[i++];
-	//std::cout<<trunc[0]<<' '<<trunc[1]<<' '<<trunc[2]<<' '<<isret<<std::endl;
+	if (int pos = isCal(trunc[i])){
+		std::string lf = trunc[i].substr(0,pos), \
+					rf = trunc[i].substr(pos+1);
+					
+		switch(trunc[i][pos]){
+			case '+':{
+				func = "add";break;
+			}
+			case '-':{
+				func = "sub";break;
+			}
+			case '*':{
+				func = "mul";break;
+			}
+			case '/':{
+				func = "div";break;
+			}
+		}
+		argv[0] = lf;
+		argv[1] = rf;
+		argc = 1;
+		//std::cout<<func<<' '<<lf<<' '<<rf<<std::endl;
+		good = true;
+		return true;
+	}
+	//std::cout<<trunc[i]<<std::endl;
 	if (isNum(trunc[i]) || Variable::isVari(trunc[i])){
+		
 		argc = 1;
 		argv[0] = trunc[i];argv[1] = "0";
 		func = "add";
@@ -95,7 +139,7 @@ bool line::push(std::string x){
 }
 	
 std::string line::exec(){
-	//std::cout<<va<<std::endl; 
+	//std::cout<<func<<std::endl; 
 	std::string ag[_maxtr];
 	for (int i=0;i<=argc;i++) ag[i] = argv[i];
 	
@@ -113,8 +157,11 @@ std::string line::exec(){
 			ag[i] = std::to_string(Variable::Fetch(ag[i]));
 		}else if (exeable(ag[i]))
 			ag[i] = execl(ag[i]);
+		
+		//std::cout<<ag[i]<<',';
 	}
 	
+	//std::cout<<std::endl;
 	int ret;
 	if (isFunc(func))
 		ret = execPro(gramp[func],ag);
