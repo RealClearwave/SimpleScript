@@ -12,7 +12,7 @@ std::map <std::string,int> gramp;
 
 char trset[_maxtr]{
 	' ','	',',','(',')',
-	'=','{','\0'
+	'{','\0'
 };
 std::map<char,bool> trs;
 	
@@ -49,72 +49,124 @@ int isCal(std::string x){
 bool isRet(std::string &x){
 	int lf = x.find('(');
 	int eq = x.find('=');
-	int ek = x.find("==");
-	if (eq == ek) return false;
-	if (eq == -1) return false;
-	if (lf != -1 && lf < eq) return false;
+	if (lf == -1 && eq != -1){
+		x[eq] = ' ';
+		return true;
+	}
+	
+	if (eq == -1 || lf < eq) return false;
 	
 	x[eq] = ' ';
 	return true;
 }
 
+bool line::contain(std::string x){
+	return (func == x);
+}
+
 bool line::push(std::string x){
-	to_str = SpaceErase(x);
+	x = SpaceErase(x);
+	to_str = x;isret = isRet(x);
 	int i = 0,last = 0;pts = -1;argc = -1;
 	
 	while (i < x.length() && trs.find(x[i]) != trs.end()) last++,i++;
 	while (i < x.length()){
-		while (i < x.length() && trs.find(x[i]) == trs.end()) i++;
-		trunc[++pts] = x.substr(last,i-last);
+		if (x[i] == '\"'){
+			pts++;
+			while (x[++i] != '\"') trunc[pts] += x[i];
+			trunc[pts] = '\"' + trunc[pts] + x[i++];
+			//std::cout<<"HA"<<trunc[pts]<<"HB"<<std::endl;
+			last = i;
+		}else {
+			while (i < x.length() && trs.find(x[i]) == trs.end()) i++;
+			trunc[++pts] = x.substr(last,i-last);
+		}
+		
 		if (i >= x.length()) break;
 		while (i < x.length() && trs.find(x[i]) != trs.end()) i++;
 		last = i;
 	}
 
-	i = 0;if (isRet(x)) va = trunc[i++];
+	//for (int i=0;i<=pts;i++) std::cout<<trunc[i]<<' ';
+	//std::cout<<std::endl;
+	
+	i = 0;if (isret) va = trunc[i++];
+	if (int pos = isCal(trunc[i])){
+		std::string lf = trunc[i].substr(0,pos), \
+					rf = trunc[i].substr(pos+1);
+					
+		switch(trunc[i][pos]){
+			case '+':{
+				func = "add";break;
+			}
+			case '-':{
+				func = "sub";break;
+			}
+			case '*':{
+				func = "mul";break;
+			}
+			case '/':{
+				func = "div";break;
+			}
+		}
+		argv[0] = lf;
+		argv[1] = rf;
+		argc = 1;
+		//std::cout<<func<<' '<<lf<<' '<<rf<<std::endl;
+		good = true;
+		return true;
+	}
+	//std::cout<<trunc[i]<<std::endl;
 	if (isNum(trunc[i]) || Variable::isVari(trunc[i])){
+		
 		argc = 1;
 		argv[0] = trunc[i];argv[1] = "0";
 		func = "add";
+		good = true;
 		return true;
 	}else if (isFunc(trunc[i]) || File::isModel(trunc[i])) {
 		func = trunc[i];
 		while (++i <= pts){
 			argv[++argc] = trunc[i];
 		}
+		good = true;
 		return true;
-	}else
+	}else{
+		func = trunc[i];
+		good = false;
 		return false;
-		
-	return true;
+	};
 }
 	
 std::string line::exec(){
-	//std::cout<<to_str<<std::endl; 
+	//std::cout<<func<<std::endl; 
 	std::string ag[_maxtr];
 	for (int i=0;i<=argc;i++) ag[i] = argv[i];
 	
-	for (int i=0;i<=argc;i++){
+	for (int i=0;i<=argc;i++){ 
 		if (ag[i][0] == '"')
 			ag[i] = ag[i].substr(1,ag[i].length()-2);
 		else if (ag[i][0] == '&')
 			ag[i] = ag[i].substr(1,ag[i].length()-1);	
 		else if (isCal(ag[i])) {
-				ag[i] = CalculationExtend(ag[i]);
-				ag[i] = execl(ag[i]);
+			ag[i] = CalculationExtend(ag[i]);
+			ag[i] = execl(ag[i]);
 		}else if (isNum(ag[i])){
 			//std::cout<<ag[i]<<" is a number"<<std::endl;
 		}else if (Variable::isVari(ag[i])){
-				ag[i] = std::to_string(Variable::Fetch(ag[i]));
+			ag[i] = std::to_string(Variable::Fetch(ag[i]));
 		}else if (exeable(ag[i]))
 			ag[i] = execl(ag[i]);
-			
+		
+		//std::cout<<ag[i]<<',';
 	}
 	
+	//std::cout<<std::endl;
 	int ret;
 	if (isFunc(func))
 		ret = execPro(gramp[func],ag);
 	else{
+		//std::cout<<to_str<<std::endl;
 		std::string ag0[maxarg];
 		ag0[0] = func;
 		for (int i=0;i<=argc;i++)
@@ -123,7 +175,8 @@ std::string line::exec(){
 		ret = File::ModelExecute(ag0);
 	}
 	
-	if (isRet(to_str)) Variable::Move(va,ret);
+	//std::cout<<ret<<std::endl;
+	if (isret) Variable::Move(va,ret);
 	return std::to_string(ret);
 }	
 

@@ -20,11 +20,13 @@ struct line{
 	std::string va,func;
 	std::string trunc[_maxtr],argv[_maxtr];
 	std::string to_str;
-	
+	bool isret;
+	bool good;
 	std::string str(){
 		return to_str;
 	}
 	bool push(std::string x);
+	bool contain(std::string x);
 	std::string exec();
 };
 
@@ -62,8 +64,11 @@ struct File{
 	static void LoadModule(std::string fn);
 	static bool isModel(std::string x);
 	static bool SkipCurrentScriptLine();
+	static void ForLoop(std::string ini,std::string enf,std::string ite);
 };
 
-//Stylize
+//MessPack
 std::string SpaceErase(std::string line);
 std::string CalculationExtend(std::string ex);
+bool Compare(std::string x);
+

@@ -4,7 +4,7 @@
 
 File CurrentScript;
 
-int main(int argc,char* argv[]) {
+int main(int argc,char* argv[]) { 
 	graInit();
 	File::ExecuteScript(argv[1]);
 	return 0;

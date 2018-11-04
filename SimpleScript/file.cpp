@@ -1,5 +1,6 @@
 #include "SimpleScript.h"
 #include <string>
+#include <iostream>
 #include <fstream>
 
 std::vector<line> ln;
@@ -57,15 +58,15 @@ void File::ExecuteScript(std::string fn){
 }
 
 void File::IgnoreUntil(std::string fn){
-	while (ln[++esp].str() != fn);
+	while (!ln[++esp].contain(fn));
 		//std::cout<<"[Ignore]"<<ln[esp].str()<<std::endl;
 }
 
 void File::ExecuteScriptuntil(std::string flg){
 	int te = esp;esp++;
-	while (ln[esp].str() != flg){
-		//std::cout<<ln[esp].str()<<','<<flg<<std::endl;
-		ln[esp].exec();
+	while (!ln[esp].contain(flg)){
+		//std::cout<<esp<<' '<<ln[esp].str()<<' '<<ln[esp].good<<std::endl;
+		if (ln[esp].good) ln[esp].exec();
 		if (ln[esp].str().find("return") != -1) break;
 		
 		esp++;
@@ -100,6 +101,7 @@ int  File::ModelExecute(std::string argv[]){
 bool File::isModel(std::string x){
 	return (fun2ln.find(x) != fun2ln.end());
 }
+
 void File::LoadModule(std::string fn){
 	fn += ".fmd";
 	std::ifstream fin(fn.c_str());
@@ -117,3 +119,17 @@ void File::LoadModule(std::string fn){
 	
 	return;
 } 
+
+void File::ForLoop(std::string ini,std::string enf,std::string ite){
+	//std::cout<<ini<<' '<<enf<<' '<<ite<<std::endl;
+	execl(ini);
+	//std::cout<<Compare("4<11")<<std::endl;
+	while (Compare(enf)){
+		//std::cout<<"#"<<enf<<' '<<Variable::Fetch("i")<<"#"<<std::endl;
+		ExecuteScriptuntil("}");
+		execl(ite);
+	}
+	
+	IgnoreUntil("}");
+	//SkipCurrentScriptLine();
+}
