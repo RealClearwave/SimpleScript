@@ -20,7 +20,7 @@ Developing. There are following TODO items:
 	- [x] SingleFile
 	- [x] includes
 
-## Boot
+## Execute
 root@fenlaptop# **SimpleScript[.exe]** filename
 ## Grammar
 please see [Wiki](https://github.com/Fedoraer/SimpleScript/wiki).
